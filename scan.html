@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapSaver - Scan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { background-color: #f7faf8; }
+        .scanner { background-color: #0a0f0d; }
+        @keyframes scanline { from { top: 0%; } to { top: 100%; } }
+        .scanline { animation: scanline 2s linear infinite; }
+        .nav-active { color: #10b981; font-weight: 600; }
+        .nav-inactive { color: #94a3b8; }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen pb-24">
+        <!-- Header -->
+        <div class="px-5 pt-7 pb-6">
+            <p class="text-xs font-bold tracking-widest text-emerald-600 uppercase font-mono">Scan</p>
+            <h1 class="mt-2 text-2xl font-black text-emerald-950">Barcode & QR Scanner</h1>
+            <p class="text-sm text-slate-500 mt-1">Check SNAP & WIC eligibility instantly</p>
+
+            <!-- Mode Tabs -->
+            <div class="mt-4 flex gap-2">
+                <button class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-2xl text-xs font-bold bg-emerald-950 text-white">
+                    <i class="fas fa-barcode"></i> Barcode / UPC
+                </button>
+                <button class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-2xl text-xs font-bold bg-white text-slate-500 border border-slate-200">
+                    <i class="fas fa-qrcode"></i> QR Code
+                </button>
+            </div>
+        </div>
+
+        <!-- Scanner View -->
+        <div class="px-5">
+            <div class="scanner aspect-square rounded-3xl overflow-hidden relative flex items-center justify-center">
+                <div class="absolute inset-0 opacity-20" style="background-image: linear-gradient(#1f2f28 1px, transparent 1px), linear-gradient(90deg, #1f2f28 1px, transparent 1px); background-size: 24px 24px;"></div>
+                
+                <!-- Corners -->
+                <div class="absolute top-6 left-6 w-9 h-9 border-t-2 border-l-2 border-emerald-400 rounded-tl-xl"></div>
+                <div class="absolute top-6 right-6 w-9 h-9 border-t-2 border-r-2 border-emerald-400 rounded-tr-xl"></div>
+                <div class="absolute bottom-6 left-6 w-9 h-9 border-b-2 border-l-2 border-emerald-400 rounded-bl-xl"></div>
+                <div class="absolute bottom-6 right-6 w-9 h-9 border-b-2 border-r-2 border-emerald-400 rounded-br-xl"></div>
+
+                <!-- Center Content -->
+                <div class="flex flex-col items-center text-center z-10">
+                    <i class="fas fa-expand text-3xl text-emerald-400"></i>
+                    <p class="mt-3 text-emerald-300 text-xs">Tap a product below to confirm what the camera sees</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Selector -->
+        <div class="px-5 mt-8">
+            <p class="text-xs font-bold tracking-widest text-emerald-900/50 uppercase mb-3">Demo products</p>
+            <div class="space-y-2">
+                <button onclick="selectProduct()" class="w-full bg-white rounded-2xl px-4 py-3 border border-slate-100 text-left active:scale-95 transition-transform">
+                    <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center"><i class="fas fa-leaf text-emerald-700"></i></span>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-sm font-bold text-slate-900">Great Value White Bread</p>
+                            <p class="text-xs text-slate-400">UPC: 078742013427</p>
+                        </div>
+                        <span class="inline-block bg-sky-100 text-sky-700 px-2 py-1 rounded-full text-xs font-bold">SNAP</span>
+                    </div>
+                </button>
+
+                <button onclick="selectProduct()" class="w-full bg-white rounded-2xl px-4 py-3 border border-slate-100 text-left active:scale-95 transition-transform">
+                    <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center"><i class="fas fa-milk-glass text-emerald-700"></i></span>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-sm font-bold text-slate-900">Horizon Organic Whole Milk</p>
+                            <p class="text-xs text-slate-400">UPC: 041303001657</p>
+                        </div>
+                        <span class="inline-block bg-violet-100 text-violet-700 px-2 py-1 rounded-full text-xs font-bold">WIC</span>
+                    </div>
+                </button>
+
+                <button onclick="selectProduct()" class="w-full bg-white rounded-2xl px-4 py-3 border border-slate-100 text-left active:scale-95 transition-transform">
+                    <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center"><i class="fas fa-star text-emerald-700"></i></span>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-sm font-bold text-slate-900">Cheerios Original 18oz</p>
+                            <p class="text-xs text-slate-400">UPC: 016000275270</p>
+                        </div>
+                        <span class="inline-block bg-sky-100 text-sky-700 px-2 py-1 rounded-full text-xs font-bold">SNAP</span>
+                    </div>
+                </button>
+
+                <button onclick="selectProduct()" class="w-full bg-white rounded-2xl px-4 py-3 border border-slate-100 text-left active:scale-95 transition-transform">
+                    <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center"><i class="fas fa-bag-shopping text-rose-500"></i></span>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-sm font-bold text-slate-900">Doritos Nacho Cheese</p>
+                            <p class="text-xs text-slate-400">UPC: 070038411756</p>
+                        </div>
+                        <span class="inline-block bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-bold">Not SNAP/WIC</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <div class="h-20"></div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-5 py-3 flex items-center justify-around">
+        <a href="home.html" class="flex flex-col items-center gap-1 text-xs nav-inactive">
+            <i class="fas fa-home text-lg"></i>
+            <span>Home</span>
+        </a>
+        <a href="scan.html" class="flex flex-col items-center gap-1 text-xs nav-active">
+            <i class="fas fa-expand text-lg"></i>
+            <span>Scan</span>
+        </a>
+        <a href="deals.html" class="flex flex-col items-center gap-1 text-xs nav-inactive">
+            <i class="fas fa-tag text-lg"></i>
+            <span>Deals</span>
+        </a>
+        <a href="foodbanks.html" class="flex flex-col items-center gap-1 text-xs nav-inactive">
+            <i class="fas fa-location-dot text-lg"></i>
+            <span>Food Banks</span>
+        </a>
+    </div>
+
+    <script>
+        function selectProduct() {
+            alert('Product scanned successfully! This would show eligibility details.');
+        }
+    </script>
+</body>
+</html>

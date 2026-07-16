@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapSaver - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { background-color: #f7faf8; }
+        .ticket-card { 
+            position: relative;
+            background: white;
+            border-radius: 1rem;
+            border: 1px solid rgba(6,40,26,0.06);
+            box-shadow: 0 1px 2px rgba(6,40,26,0.06), 0 8px 24px -12px rgba(6,40,26,0.15);
+        }
+        .ticket-card::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #f7faf8;
+        }
+        .ticket-card::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #f7faf8;
+        }
+        .nav-active { color: #10b981; font-weight: 600; }
+        .nav-inactive { color: #94a3b8; }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen pb-24">
+        <!-- Header -->
+        <div class="bg-white px-5 pt-7 pb-6 rounded-b-[28px] border-b border-slate-100">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs font-light tracking-widest text-slate-400 uppercase font-mono">Good morning</p>
+                    <h1 class="mt-2 text-3xl leading-tight font-black text-emerald-950">
+                        Make every<br>dollar count.
+                    </h1>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-700 text-xs font-bold">MA</div>
+            </div>
+
+            <div class="mt-3 text-xs font-light text-slate-400 flex items-center gap-1.5">
+                <i class="fas fa-arrow-up-right text-xs"></i>
+                Using approximate Boston location <button class="underline ml-0.5">retry</button>
+            </div>
+
+            <div class="mt-5 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-semibold text-emerald-600 uppercase tracking-wide">This month's savings</p>
+                    <p class="mt-2 text-4xl font-black text-emerald-950 font-mono">$47.80</p>
+                    <p class="mt-2 flex items-center gap-1 text-xs font-light text-slate-400">
+                        <i class="fas fa-trending-up"></i> $12 more than last month
+                    </p>
+                </div>
+                <svg width="120" height="34" class="overflow-visible">
+                    <polyline points="0,24 15,18 30,19 45,12 60,6 75,8 90,2 105,0 120,2" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="120" cy="2" r="3" fill="#6ee7b7"/>
+                </svg>
+            </div>
+
+            <div class="mt-6 grid grid-cols-3 gap-3">
+                <a href="scan.html" class="bg-emerald-50 rounded-2xl py-3 flex flex-col items-center gap-2 active:scale-95 transition-transform border border-emerald-100">
+                    <span class="w-9 h-9 rounded-xl bg-white flex items-center justify-center"><i class="fas fa-camera text-emerald-700"></i></span>
+                    <span class="text-xs font-bold text-emerald-950">Scan Item</span>
+                </a>
+                <a href="deals.html" class="bg-amber-50 rounded-2xl py-3 flex flex-col items-center gap-2 active:scale-95 transition-transform border border-amber-100">
+                    <span class="w-9 h-9 rounded-xl bg-white flex items-center justify-center"><i class="fas fa-tag text-amber-600"></i></span>
+                    <span class="text-xs font-bold text-emerald-950">Find Deals</span>
+                </a>
+                <a href="foodbanks.html" class="bg-rose-50 rounded-2xl py-3 flex flex-col items-center gap-2 active:scale-95 transition-transform border border-rose-100">
+                    <span class="w-9 h-9 rounded-xl bg-white flex items-center justify-center"><i class="fas fa-map-pin text-rose-600"></i></span>
+                    <span class="text-xs font-bold text-emerald-950">Food Banks</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Your Programs -->
+        <div class="px-5 mt-6">
+            <p class="text-xs font-bold tracking-widest text-emerald-900/50 uppercase mb-3">Your programs</p>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="rounded-2xl overflow-hidden border border-sky-100 bg-sky-50">
+                    <div class="bg-sky-600 px-4 py-2"><span class="text-white text-xs font-black tracking-wide">SNAP</span></div>
+                    <ul class="px-4 py-3 space-y-1.5">
+                        <li class="text-sm text-slate-700 flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-sky-500"></span>Bread & Grains</li>
+                        <li class="text-sm text-slate-700 flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-sky-500"></span>Fruits & Veggies</li>
+                        <li class="text-sm text-slate-700 flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-sky-500"></span>Meat & Fish</li>
+                        <li class="text-sm text-slate-700 flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-sky-500"></span>Dairy</li>
+                    </ul>
+                </div>
+                <div class="rounded-2xl overflow-hidden border border-violet-100 bg-violet-50">
+                    <div class="bg-violet-600 px-4 py-2"><span class="text-white text-xs font-black tracking-wide">WIC</span></div>
+                    <ul class="px-4 py-3 space-y-1.5">
+                        <li class="text-sm text-slate-700 flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-violet-500"></span>Specific cereals</li>
+                        <li class="text-sm text-slate-700 flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-violet-500"></span>Baby formula</li>
+                        <li class="text-sm text-slate-700 flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-violet-500"></span>Eggs & Milk</li>
+                        <li class="text-sm text-slate-700 flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-violet-500"></span>Juice</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Card -->
+        <div class="px-5 mt-6">
+            <div class="ticket-card px-4 py-4">
+                <div class="flex items-start gap-3">
+                    <span class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0"><i class="fas fa-bell text-emerald-700"></i></span>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-sm font-bold text-emerald-950">Proximity alerts are on</p>
+                        <p class="text-xs text-slate-400 leading-relaxed mt-1">
+                            We'll notify you when you're near a store with a clipped coupon, or a food bank that's well stocked. Try it:
+                        </p>
+                        <button class="mt-2 inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full active:scale-95 transition-transform">
+                            <i class="fas fa-location-arrow"></i> Simulate walking near Star Market
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Scans -->
+        <div class="px-5 mt-6 mb-20">
+            <div class="flex items-center justify-between mb-3">
+                <p class="text-xs font-bold tracking-widest text-emerald-900/50 uppercase">Recent scans</p>
+                <a href="scan.html" class="text-xs font-bold text-emerald-700 flex items-center gap-1">Scan more <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="space-y-3">
+                <div class="ticket-card px-4 py-3">
+                    <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center"><i class="fas fa-leaf text-emerald-700"></i></span>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-sm font-bold text-slate-900">Great Value White Bread</p>
+                            <p class="text-xs text-slate-400">Walmart Brand</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="inline-block bg-sky-100 text-sky-700 px-2 py-1 rounded-full text-xs font-bold mb-1">SNAP</span>
+                            <p class="text-xs font-mono font-bold text-emerald-600">Save $0.80</p>
+                        </div>
+                        <span class="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center shrink-0"><i class="fas fa-check text-white text-xs"></i></span>
+                    </div>
+                </div>
+
+                <div class="ticket-card px-4 py-3">
+                    <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center"><i class="fas fa-milk-glass text-emerald-700"></i></span>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-sm font-bold text-slate-900">Horizon Organic Whole...</p>
+                            <p class="text-xs text-slate-400">Horizon</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="inline-block bg-violet-100 text-violet-700 px-2 py-1 rounded-full text-xs font-bold mb-1">WIC</span>
+                            <p class="text-xs font-mono font-bold text-emerald-600">Save $1.20</p>
+                        </div>
+                        <span class="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center shrink-0"><i class="fas fa-check text-white text-xs"></i></span>
+                    </div>
+                </div>
+
+                <div class="ticket-card px-4 py-3">
+                    <div class="flex items-center gap-3">
+                        <span class="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center"><i class="fas fa-bag-shopping text-rose-500"></i></span>
+                        <div class="min-w-0 flex-1">
+                            <p class="text-sm font-bold text-slate-900">Doritos Nacho Cheese</p>
+                            <p class="text-xs text-slate-400">Frito-Lay</p>
+                        </div>
+                        <p class="text-xs font-bold text-rose-500">Not eligible</p>
+                        <span class="w-6 h-6 rounded-full bg-rose-100 flex items-center justify-center shrink-0"><i class="fas fa-x text-rose-500 text-xs"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-5 py-3 flex items-center justify-around">
+        <a href="home.html" class="flex flex-col items-center gap-1 text-xs nav-active">
+            <i class="fas fa-home text-lg"></i>
+            <span>Home</span>
+        </a>
+        <a href="scan.html" class="flex flex-col items-center gap-1 text-xs nav-inactive">
+            <i class="fas fa-expand text-lg"></i>
+            <span>Scan</span>
+        </a>
+        <a href="deals.html" class="flex flex-col items-center gap-1 text-xs nav-inactive">
+            <i class="fas fa-tag text-lg"></i>
+            <span>Deals</span>
+        </a>
+        <a href="foodbanks.html" class="flex flex-col items-center gap-1 text-xs nav-inactive">
+            <i class="fas fa-location-dot text-lg"></i>
+            <span>Food Banks</span>
+        </a>
+    </div>
+</body>
+</html>

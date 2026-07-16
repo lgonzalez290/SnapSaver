@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapSaver - Deals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { background-color: #f7faf8; }
+        .nav-active { color: #10b981; font-weight: 600; }
+        .nav-inactive { color: #94a3b8; }
+        .deal-card {
+            background: white;
+            border-radius: 1rem;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen pb-24">
+        <!-- Header -->
+        <div class="px-5 pt-7 pb-6">
+            <p class="text-xs font-bold tracking-widest text-amber-600 uppercase font-mono">Deals</p>
+            <h1 class="mt-2 text-2xl font-black text-emerald-950">Find Deals Near You</h1>
+            <p class="text-sm text-slate-500 mt-1">Digital coupons and store specials</p>
+        </div>
+
+        <!-- Deals List -->
+        <div class="px-5 space-y-3">
+            <!-- Deal 1 -->
+            <div class="deal-card p-4">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex items-start gap-3">
+                        <span class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center shrink-0"><i class="fas fa-leaf text-amber-600 text-lg"></i></span>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900">Great Value White Bread</p>
+                            <p class="text-xs text-slate-400">Great Value · Bread & Bakery</p>
+                        </div>
+                    </div>
+                    <button class="text-xl text-gray-300 hover:text-red-400"><i class="fas fa-bookmark"></i></button>
+                </div>
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <span class="text-xl font-black text-emerald-700">$1.68</span>
+                        <span class="text-xs text-slate-400 line-through ml-2">$2.48</span>
+                    </div>
+                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold">-32%</span>
+                </div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="inline-block bg-sky-100 text-sky-700 px-2 py-1 rounded-full text-xs font-bold">SNAP</span>
+                    <span class="text-xs text-slate-400">Exp: Jul 20</span>
+                </div>
+                <p class="text-xs text-slate-500 mb-3">Digital coupon • Walmart – Everett</p>
+                <button class="w-full bg-emerald-600 text-white py-2 rounded-xl text-xs font-bold active:scale-95 transition-transform">
+                    Clip Coupon
+                </button>
+            </div>
+
+            <!-- Deal 2 -->
+            <div class="deal-card p-4">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex items-start gap-3">
+                        <span class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0"><i class="fas fa-milk-glass text-emerald-600 text-lg"></i></span>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900">Horizon Organic Whole Milk</p>
+                            <p class="text-xs text-slate-400">Horizon · Dairy</p>
+                        </div>
+                    </div>
+                    <button class="text-xl text-amber-400"><i class="fas fa-bookmark"></i></button>
+                </div>
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <span class="text-xl font-black text-emerald-700">$4.79</span>
+                        <span class="text-xs text-slate-400 line-through ml-2">$5.99</span>
+                    </div>
+                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold">-20%</span>
+                </div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="inline-block bg-sky-100 text-sky-700 px-2 py-1 rounded-full text-xs font-bold">SNAP</span>
+                    <span class="inline-block bg-violet-100 text-violet-700 px-2 py-1 rounded-full text-xs font-bold">WIC</span>
+                    <span class="text-xs text-slate-400">Exp: Jul 31</span>
+                </div>
+                <p class="text-xs text-slate-500 mb-3">WIC approved • Star Market – Fenway</p>
+                <button class="w-full bg-emerald-600 text-white py-2 rounded-xl text-xs font-bold active:scale-95 transition-transform">
+                    Clip Coupon
+                </button>
+            </div>
+
+            <!-- Deal 3 -->
+            <div class="deal-card p-4">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex items-start gap-3">
+                        <span class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center shrink-0"><i class="fas fa-star text-amber-600 text-lg"></i></span>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900">Cheerios Original 18oz</p>
+                            <p class="text-xs text-slate-400">General Mills · Cereal</p>
+                        </div>
+                    </div>
+                    <button class="text-xl text-amber-400"><i class="fas fa-bookmark"></i></button>
+                </div>
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <span class="text-xl font-black text-emerald-700">$2.99</span>
+                        <span class="text-xs text-slate-400 line-through ml-2">$5.49</span>
+                    </div>
+                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold">-46%</span>
+                </div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="inline-block bg-sky-100 text-sky-700 px-2 py-1 rounded-full text-xs font-bold">SNAP</span>
+                    <span class="inline-block bg-violet-100 text-violet-700 px-2 py-1 rounded-full text-xs font-bold">WIC</span>
+                    <span class="text-xs text-slate-400">Exp: Aug 5</span>
+                </div>
+                <p class="text-xs text-slate-500 mb-3">WIC-eligible cereal • Walmart – Everett</p>
+                <button class="w-full bg-emerald-600 text-white py-2 rounded-xl text-xs font-bold active:scale-95 transition-transform">
+                    Clip Coupon
+                </button>
+            </div>
+
+            <!-- Deal 4 -->
+            <div class="deal-card p-4">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex items-start gap-3">
+                        <span class="w-10 h-10 rounded-lg bg-rose-100 flex items-center justify-center shrink-0"><i class="fas fa-baby text-rose-600 text-lg"></i></span>
+                        <div>
+                            <p class="text-sm font-bold text-slate-900">Gerber Infant Formula</p>
+                            <p class="text-xs text-slate-400">Gerber · Baby & Infant</p>
+                        </div>
+                    </div>
+                    <button class="text-xl text-gray-300 hover:text-red-400"><i class="fas fa-bookmark"></i></button>
+                </div>
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <span class="text-xl font-black text-emerald-700">$22.99</span>
+                        <span class="text-xs text-slate-400 line-through ml-2">$27.05</span>
+                    </div>
+                    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold">-15%</span>
+                </div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="inline-block bg-violet-100 text-violet-700 px-2 py-1 rounded-full text-xs font-bold">WIC</span>
+                    <span class="text-xs text-slate-400">Exp: Aug 12</span>
+                </div>
+                <p class="text-xs text-slate-500 mb-3">WIC food package • Stop & Shop – South Bay</p>
+                <button class="w-full bg-emerald-600 text-white py-2 rounded-xl text-xs font-bold active:scale-95 transition-transform">
+                    Clip Coupon
+                </button>
+            </div>
+
+            <div class="h-20"></div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-5 py-3 flex items-center justify-around">
+        <a href="home.html" class="flex flex-col items-center gap-1 text-xs nav-inactive">
+            <i class="fas fa-home text-lg"></i>
+            <span>Home</span>
+        </a>
+        <a href="scan.html" class="flex flex-col items-center gap-1 text-xs nav-inactive">
+            <i class="fas fa-expand text-lg"></i>
+            <span>Scan</span>
+        </a>
+        <a href="deals.html" class="flex flex-col items-center gap-1 text-xs nav-active">
+            <i class="fas fa-tag text-lg"></i>
+            <span>Deals</span>
+        </a>
+        <a href="foodbanks.html" class="flex flex-col items-center gap-1 text-xs nav-inactive">
+            <i class="fas fa-location-dot text-lg"></i>
+            <span>Food Banks</span>
+        </a>
+    </div>
+</body>
+</html>

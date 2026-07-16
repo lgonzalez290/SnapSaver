@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapSaver - Food Banks</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { background-color: #f7faf8; }
+        .nav-active { color: #10b981; font-weight: 600; }
+        .nav-inactive { color: #94a3b8; }
+        .bank-card {
+            background: white;
+            border-radius: 1rem;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .level-high { background-color: #d1fae5; color: #065f46; }
+        .level-low { background-color: #fef3c7; color: #92400e; }
+        .level-running { background-color: #fed7aa; color: #92400e; }
+        .level-empty { background-color: #fecaca; color: #991b1b; }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen pb-24">
+        <!-- Header -->
+        <div class="px-5 pt-7 pb-6">
+            <p class="text-xs font-bold tracking-widest text-rose-600 uppercase font-mono">Food Banks</p>
+            <h1 class="mt-2 text-2xl font-black text-emerald-950">Food Banks Near You</h1>
+            <p class="text-sm text-slate-500 mt-1">SNAP & WIC approved community resources</p>
+        </div>
+
+        <!-- Banks List -->
+        <div class="px-5 space-y-3">
+            <!-- Bank 1 -->
+            <div class="bank-card p-4">
+                <div class="flex items-start justify-between mb-2">
+                    <div>
+                        <p class="text-sm font-bold text-slate-900">Boston Community Food Pantry</p>
+                        <p class="text-xs text-slate-400 mt-0.5">45 Dimock St, Roxbury, MA 02119</p>
+                    </div>
+                    <span class="inline-block bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full text-xs font-bold">Open</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-2">Mon–Fri · 9:00am – 4:00pm</p>
+                <p class="text-xs text-slate-400">(617) 555-0142</p>
+                <div class="flex gap-1 mt-2">
+                    <span class="inline-block bg-sky-100 text-sky-700 px-2 py-1 rounded-full text-xs font-bold">SNAP</span>
+                    <span class="inline-block bg-violet-100 text-violet-700 px-2 py-1 rounded-full text-xs font-bold">WIC</span>
+                </div>
+                <div class="mt-3 pt-3 border-t border-slate-100">
+                    <p class="text-xs font-bold text-slate-600 mb-2">Inventory Status</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <p class="text-xs text-slate-500">Produce</p>
+                            <span class="level-badge level-high"><i class="fas fa-circle text-xs"></i> HIGH</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500">Dairy</p>
+                            <span class="level-badge level-low"><i class="fas fa-circle text-xs"></i> LOW</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500">Grains</p>
+                            <span class="level-badge level-high"><i class="fas fa-circle text-xs"></i> HIGH</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500">Dry Goods</p>
+                            <span class="level-badge level-high"><i class="fas fa-circle text-xs"></i> HIGH</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bank 2 -->
+            <div class="bank-card p-4">
+                <div class="flex items-start justify-between mb-2">
+                    <div>
+                        <p class="text-sm font-bold text-slate-900">Greater Boston Food Bank</p>
+                        <p class="text-xs text-slate-400 mt-0.5">70 South Bay Ave, Boston, MA 02118</p>
+                    </div>
+                    <span class="inline-block bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full text-xs font-bold">Open</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-2">Mon–Sat · 8:00am – 6:00pm</p>
+                <p class="text-xs text-slate-400">(617) 555-0198</p>
+                <div class="flex gap-1 mt-2">
+                    <span class="inline-block bg-sky-100 text-sky-700 px-2 py-1 rounded-full text-xs font-bold">SNAP</span>
+                    <span class="inline-block bg-violet-100 text-violet-700 px-2 py-1 rounded-full text-xs font-bold">WIC</span>
+                </div>
+                <div class="mt-3 pt-3 border-t border-slate-100">
+                    <p class="text-xs font-bold text-slate-600 mb-2">Inventory Status</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <p class="text-xs text-slate-500">Produce</p>
+                            <span class="level-badge level-high"><i class="fas fa-circle text-xs"></i> HIGH</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500">Dairy</p>
+                            <span class="level-badge level-high"><i class="fas fa-circle text-xs"></i> HIGH</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500">Grains</p>
+                            <span class="level-badge level-high"><i class="fas fa-circle text-xs"></i> HIGH</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500">Dry Goods</p>
+                            <span class="level-badge level-running"><i class="fas fa-circle text-xs"></i> RUNNING OUT</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bank 3 -->
+            <div class="bank-card p-4">
+                <div class="flex items-start justify-between mb-2">
+                    <div>
+                        <p class="text-sm font-bold text-slate-900">Dorchester Bay Neighborhood Pantry</p>
+                        <p class="text-xs text-slate-400 mt-0.5">1500 Dorchester Ave, Dorchester, MA 02122</p>
+                    </div>
+                    <span class="inline-block bg-slate-100 text-slate-700 px-2 py-1 rounded-full text-xs font-bold">Closed</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-2">Tue & Thu · 10:00am – 2:00pm</p>
+                <p class="text-xs text-slate-400">(617) 555-0176</p>
+                <div class="flex gap-1 mt-2">
+                    <span class="inline-block bg-violet-100 text-violet-700 px-2 py-1 rounded-full text-xs font-bold">WIC</span>
+                </div>
+                <div class="mt-3 pt-3 border-t border-slate-100">
+                    <p class="text-xs font-bold text-slate-600 mb-2">Inventory Status</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <p class="text-xs text-slate-500">Produce</p>
+                            <span class="level-badge level-low"><i class="fas fa-circle text-xs"></i> LOW</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500">Dairy</p>
+                            <span class="level-badge level-empty"><i class="fas fa-circle text-xs"></i> EMPTY</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500">Grains</p>
+                            <span class="level-badge level-low"><i class="fas fa-circle text-xs"></i> LOW</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500">Dry Goods</p>
+                            <span class="level-badge level-low"><i class="fas fa-circle text-xs"></i> LOW</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bank 4 -->
+            <div class="bank-card p-4">
+                <div class="flex items-start justify-between mb-2">
+                    <div>
+                        <p class="text-sm font-bold text-slate-900">St. Mary's Center Pantry</p>
+                        <p class="text-xs text-slate-400 mt-0.5">90 Cushing Ave, Dorchester, MA 02125</p>
+                    </div>
+                    <span class="inline-block bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full text-xs font-bold">Open</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-2">Mon–Fri · 9:00am – 1:00pm</p>
+                <p class="text-xs text-slate-400">(617) 555-0134</p>
+                <div class="flex gap-1 mt-2">
+                    <span class="inline-block bg-sky-100 text-sky-700 px-2 py-1 rounded-full text-xs font-bold">SNAP</span>
+                </div>
+                <div class="mt-3 pt-3 border-t border-slate-100">
+                    <p class="text-xs font-bold text-slate-600 mb-2">Inventory Status</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <p class="text-xs text-slate-500">Produce</p>
+                            <span class="level-badge level-running"><i class="fas fa-circle text-xs"></i> RUNNING OUT</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500">Dairy</p>
+                            <span class="level-badge level-high"><i class="fas fa-circle text-xs"></i> HIGH</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500">Grains</p>
+                            <span class="level-badge level-high"><i class="fas fa-circle text-xs"></i> HIGH</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500">Dry Goods</p>
+                            <span class="level-badge level-high"><i class="fas fa-circle text-xs"></i> HIGH</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-20"></div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-5 py-3 flex items-center justify-around">
+        <a href="home.html" class="flex flex-col items-center gap-1 text-xs nav-inactive">
+            <i class="fas fa-home text-lg"></i>
+            <span>Home</span>
+        </a>
+        <a href="scan.html" class="flex flex-col items-center gap-1 text-xs nav-inactive">
+            <i class="fas fa-expand text-lg"></i>
+            <span>Scan</span>
+        </a>
+        <a href="deals.html" class="flex flex-col items-center gap-1 text-xs nav-inactive">
+            <i class="fas fa-tag text-lg"></i>
+            <span>Deals</span>
+        </a>
+        <a href="foodbanks.html" class="flex flex-col items-center gap-1 text-xs nav-active">
+            <i class="fas fa-location-dot text-lg"></i>
+            <span>Food Banks</span>
+        </a>
+    </div>
+</body>
+</html>
