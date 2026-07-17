@@ -1,0 +1,21 @@
+{
+  "name": "SnapSaver",
+  "short_name": "SnapSaver",
+  "description": "Compare grocery prices, find SNAP/WIC-eligible items, and discover nearby pantry support.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#05110d",
+  "theme_color": "#05110d",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

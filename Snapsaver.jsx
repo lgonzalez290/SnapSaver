@@ -23,6 +23,21 @@ import {
 /* ------------------------------------------------------------------ */
 
 const BOSTON_DEFAULT = { lat: 42.3503, lng: -71.0809 }; // Copley Square
+const PROGRAM_OPTIONS = ["SNAP", "WIC"];
+const PROGRAM_META = {
+  SNAP: { color: "sky", label: "SNAP", detail: "Supplemental Nutrition Assistance Program" },
+  WIC: { color: "violet", label: "WIC", detail: "Women, Infants, and Children" },
+};
+
+function getSelectedPrograms(programs) {
+  return (programs || []).filter((program) => PROGRAM_OPTIONS.includes(program));
+}
+
+function programsMatchSelection(programs, selectedPrograms) {
+  const normalized = getSelectedPrograms(selectedPrograms);
+  if (!normalized.length) return true;
+  return (programs || []).some((program) => normalized.includes(program));
+}
 
 function haversineMiles(lat1, lon1, lat2, lon2) {
   const R = 3958.8;
@@ -96,6 +111,8 @@ const productDB = [
     name: "Great Value White Bread",
     brand: "Great Value",
     category: "Bread & Bakery",
+    description: "A versatile loaf that works for sandwiches, toast, and everyday meals.",
+    nutrition: "About 80 calories per slice with 3g protein and 2g fiber.",
     icon: Wheat,
     stores: [
       { store: "Stop & Shop – South Bay", price: 2.79, coupon: 1.1, snap: true, wic: false },
@@ -109,6 +126,8 @@ const productDB = [
     name: "Horizon Organic Whole Milk",
     brand: "Horizon Organic",
     category: "Dairy",
+    description: "Organic whole milk with a creamy texture and strong daily nutrition value.",
+    nutrition: "Contains 8g protein and calcium-rich nutrients per serving.",
     icon: Milk,
     stores: [
       { store: "Stop & Shop – South Bay", price: 6.19, coupon: 1.0, snap: true, wic: true },
@@ -122,6 +141,8 @@ const productDB = [
     name: "Cheerios Original 18oz",
     brand: "General Mills",
     category: "Cereal",
+    description: "A family breakfast staple made for quick and filling mornings.",
+    nutrition: "Provides whole-grain goodness with 4g fiber and iron fortification.",
     icon: Sparkles,
     stores: [
       { store: "Stop & Shop – South Bay", price: 5.69, coupon: 2.4, snap: true, wic: true },
@@ -135,6 +156,8 @@ const productDB = [
     name: "Gerber Infant Formula",
     brand: "Gerber",
     category: "Baby & Infant",
+    description: "Infant formula designed for an easy feeding routine and nutrition support.",
+    nutrition: "Balanced nutrients for infant growth and development.",
     icon: Baby,
     stores: [
       { store: "Stop & Shop – South Bay", price: 27.99, coupon: 4.5, snap: false, wic: true },
@@ -148,6 +171,8 @@ const productDB = [
     name: "Doritos Nacho Cheese",
     brand: "Frito-Lay",
     category: "Snacks",
+    description: "A crunchy snack with bold flavor for shareable treats.",
+    nutrition: "Best used as an occasional snack with moderate serving size.",
     icon: Cookie,
     stores: [
       { store: "Stop & Shop – South Bay", price: 5.49, coupon: 0, snap: false, wic: false },
@@ -347,6 +372,25 @@ function useCamera(active) {
   }, [active]);
 
   return { videoRef, status };
+}
+
+function usePersistentState(key, initialValue) {
+  const [state, setState] = useState(() => {
+    if (typeof window === "undefined") return initialValue;
+    try {
+      const storedValue = window.localStorage.getItem(key);
+      return storedValue ? JSON.parse(storedValue) : initialValue;
+    } catch {
+      return initialValue;
+    }
+  });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(key, JSON.stringify(state));
+  }, [key, state]);
+
+  return [state, setState];
 }
 
 /* ------------------------------------------------------------------ */
@@ -551,33 +595,150 @@ function LocationChip({ location }) {
 }
 
 /* ------------------------------------------------------------------ */
+/* ONBOARDING / PERSONALIZATION                                       */
+/* ------------------------------------------------------------------ */
+
+function OnboardingModal({ selectedPrograms, onContinue, onToggleProgram }) {
+  const draft = selectedPrograms;
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-emerald-950/70 px-3 py-4">
+      <div className="w-full max-w-md rounded-[28px] border border-emerald-900/20 bg-white p-5 shadow-2xl shadow-black/30">
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-600">Personalize your plan</p>
+        <h2 className="mt-2 text-[22px] font-extrabold text-emerald-950">Which benefits do you use?</h2>
+        <p className="mt-2 text-[13px] leading-6 text-slate-600">
+          Choose the programs you currently use or can access so SnapSaver can focus eligibility, coupons, and store offers for you.
+        </p>
+
+        <div className="mt-4 grid gap-2.5">
+          {PROGRAM_OPTIONS.map((program) => {
+            const active = draft.includes(program);
+            return (
+              <button
+                key={program}
+                onClick={() => onToggleProgram(program)}
+                className={`flex items-center justify-between rounded-2xl border px-3.5 py-3 text-left transition-all active:scale-[0.98] ${active ? "border-emerald-400 bg-emerald-50 text-emerald-950" : "border-slate-200 bg-white text-slate-700"}`}
+              >
+                <div>
+                  <p className="text-[13px] font-bold">{program}</p>
+                  <p className="text-[11.5px] text-slate-500">{PROGRAM_META[program].detail}</p>
+                </div>
+                <span className={`rounded-full px-2.5 py-1 text-[10.5px] font-bold ${active ? "bg-emerald-600 text-white" : "bg-slate-100 text-slate-600"}`}>
+                  {active ? "Selected" : "Add"}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        <button
+          onClick={onContinue}
+          disabled={draft.length === 0}
+          className={`mt-5 w-full rounded-2xl px-4 py-3 text-[13px] font-bold transition-colors ${draft.length === 0 ? "bg-slate-200 text-slate-500" : "bg-emerald-800 text-white active:bg-emerald-900"}`}
+        >
+          Continue to SnapSaver
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function FoodDetailModal({ item, selectedPrograms, onClose }) {
+  const visibleStores = (item?.stores || []).filter((store) => {
+    if (!selectedPrograms.length) return true;
+    return selectedPrograms.some((program) => (program === "SNAP" ? store.snap : store.wic));
+  });
+
+  const eligibility = visibleStores.some((store) => store.snap || store.wic)
+    ? visibleStores.map((store) => `${store.store} · ${[store.snap ? "SNAP" : null, store.wic ? "WIC" : null].filter(Boolean).join(" + ")}`).join(" • ")
+    : "No matching store eligibility for your selected programs.";
+
+  if (!item) return null;
+
+  const Icon = item.icon;
+  return (
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-emerald-950/65 px-3 py-4">
+      <div className="w-full max-w-md rounded-[28px] border border-emerald-900/15 bg-white p-4 shadow-2xl shadow-black/30">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-start gap-3">
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+              <Icon size={22} />
+            </span>
+            <div>
+              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-600">Food details</p>
+              <h3 className="text-[18px] font-extrabold text-emerald-950">{item.name}</h3>
+              <p className="text-[12px] text-slate-500">{item.brand} · {item.category}</p>
+            </div>
+          </div>
+          <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-600">×</button>
+        </div>
+
+        <div className="mt-4 rounded-2xl border border-emerald-100 bg-emerald-50/70 p-3">
+          <p className="text-[12px] font-semibold text-emerald-900">About this food</p>
+          <p className="mt-1 text-[12.5px] leading-6 text-slate-700">{item.description}</p>
+          <p className="mt-2 text-[12px] font-semibold text-emerald-900">Nutrition</p>
+          <p className="mt-1 text-[12px] text-slate-700">{item.nutrition}</p>
+        </div>
+
+        <div className="mt-4">
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-900/60">Program eligibility</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {selectedPrograms.length ? selectedPrograms.map((program) => <span key={program} className="rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-bold text-emerald-700">{program}</span>) : <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600">Browse all programs</span>}
+          </div>
+          <p className="mt-2 text-[12px] leading-6 text-slate-600">{eligibility}</p>
+        </div>
+
+        <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-3">
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Nearby store comparison</p>
+          <div className="mt-2 space-y-2">
+            {visibleStores.map((store) => {
+              const trueCost = store.price - store.coupon;
+              return (
+                <div key={`${item.id}-${store.store}`} className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2">
+                  <div>
+                    <p className="text-[12px] font-semibold text-slate-800">{store.store}</p>
+                    <p className="text-[11px] text-slate-500">${trueCost.toFixed(2)} est. after coupon</p>
+                  </div>
+                  <div className="flex gap-1.5">
+                    {store.snap && <span className="rounded-full bg-sky-100 px-2 py-1 text-[10px] font-bold text-sky-700">SNAP</span>}
+                    {store.wic && <span className="rounded-full bg-violet-100 px-2 py-1 text-[10px] font-bold text-violet-700">WIC</span>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* HOME VIEW                                                          */
 /* ------------------------------------------------------------------ */
 
 const SAVINGS_TREND = [12, 16, 15, 21, 26, 24, 30, 34, 31, 38, 43, 47.8];
 
-function HomeView({ recentScans, goTo, location, onSimulate }) {
+function HomeView({ recentScans, goTo, location, onSimulate, selectedPrograms, onEditPrograms, searchQuery, onSearchChange, searchResults, onOpenFood, onRequestNotifications }) {
   return (
     <div className="pb-6">
-      {/* Ultra-minimal ghost hero — near-white bg, thin low-contrast type */}
-      <div className="bg-[#fdfefe] px-5 pt-7 pb-6 rounded-b-[28px] border-b border-slate-100">
+      <div className="bg-[#07120e] px-5 pt-7 pb-6 rounded-b-[28px] border-b border-emerald-900/20">
         <div className="flex items-start justify-between">
           <div>
-            <p className="text-[11px] font-light tracking-[0.18em] text-[#CBD5E1] uppercase font-mono">Good morning</p>
-            <h1 className="mt-1 text-[26px] leading-[1.15] font-extrabold text-emerald-950 tracking-tight font-display">
+            <p className="text-[11px] font-light tracking-[0.18em] text-emerald-200/70 uppercase font-mono">Good morning</p>
+            <h1 className="mt-1 text-[26px] leading-[1.15] font-extrabold text-emerald-50 tracking-tight font-display">
               Make every<br />dollar count.
             </h1>
           </div>
-          <div className="w-10 h-10 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-700 text-xs font-bold shrink-0">MA</div>
+          <div className="w-10 h-10 rounded-full bg-emerald-500/15 border border-emerald-400/20 flex items-center justify-center text-emerald-200 text-xs font-bold shrink-0">MA</div>
         </div>
 
         <div className="mt-3"><LocationChip location={location} /></div>
 
         <div className="mt-5 flex items-center justify-between">
           <div>
-            <p className="text-[11px] font-semibold text-emerald-500/70 uppercase tracking-wide">This month's savings</p>
-            <p className="mt-1 text-[32px] font-extrabold text-emerald-950 font-mono tracking-tight">$47.80</p>
-            <p className="mt-1 flex items-center gap-1 text-[12px] font-light text-[#94A3B8]">
+            <p className="text-[11px] font-semibold text-emerald-300/80 uppercase tracking-wide">This month's savings</p>
+            <p className="mt-1 text-[32px] font-extrabold text-emerald-50 font-mono tracking-tight">$47.80</p>
+            <p className="mt-1 flex items-center gap-1 text-[12px] font-light text-emerald-100/70">
               <TrendingUp size={13} strokeWidth={1.75} /> $12 more than last month
             </p>
           </div>
@@ -585,58 +746,59 @@ function HomeView({ recentScans, goTo, location, onSimulate }) {
         </div>
 
         <div className="mt-5 grid grid-cols-3 gap-2.5">
-          <button onClick={() => goTo("scan")} className="bg-white rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-slate-100 shadow-sm">
-            <span className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center"><Camera size={17} className="text-emerald-700" /></span>
-            <span className="text-[11.5px] font-semibold text-emerald-950">Scan Item</span>
+          <button onClick={() => goTo("scan")} className="bg-[#0f1f16] rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-emerald-900/30 shadow-sm hover:border-emerald-500/40">
+            <span className="w-9 h-9 rounded-xl bg-emerald-500/15 flex items-center justify-center"><Camera size={17} className="text-emerald-300" /></span>
+            <span className="text-[11.5px] font-semibold text-emerald-50">Scan Item</span>
           </button>
-          <button onClick={() => goTo("deals")} className="bg-white rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-slate-100 shadow-sm">
-            <span className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center"><Tag size={17} className="text-amber-600" /></span>
-            <span className="text-[11.5px] font-semibold text-emerald-950">Find Deals</span>
+          <button onClick={() => goTo("deals")} className="bg-[#0f1f16] rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-emerald-900/30 shadow-sm hover:border-amber-400/40">
+            <span className="w-9 h-9 rounded-xl bg-amber-500/15 flex items-center justify-center"><Tag size={17} className="text-amber-300" /></span>
+            <span className="text-[11.5px] font-semibold text-emerald-50">Find Deals</span>
           </button>
-          <button onClick={() => goTo("foodbanks")} className="bg-white rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-slate-100 shadow-sm">
-            <span className="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center"><MapPin size={17} className="text-rose-600" /></span>
-            <span className="text-[11.5px] font-semibold text-emerald-950">Food Banks</span>
+          <button onClick={() => goTo("foodbanks")} className="bg-[#0f1f16] rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-emerald-900/30 shadow-sm hover:border-rose-400/40">
+            <span className="w-9 h-9 rounded-xl bg-rose-500/15 flex items-center justify-center"><MapPin size={17} className="text-rose-300" /></span>
+            <span className="text-[11.5px] font-semibold text-emerald-50">Food Banks</span>
           </button>
         </div>
       </div>
 
       <div className="px-5 mt-6">
-        <p className="text-[11px] font-bold tracking-[0.14em] text-emerald-900/50 uppercase mb-2.5">Your programs</p>
-        <div className="grid grid-cols-2 gap-3">
-          <div className="rounded-2xl overflow-hidden border border-sky-100 bg-sky-50/60">
-            <div className="bg-sky-600 px-3.5 py-2"><span className="text-white text-[12px] font-extrabold tracking-wide">SNAP</span></div>
-            <ul className="px-3.5 py-3 space-y-1.5">
-              {["Bread & Grains", "Fruits & Veggies", "Meat & Fish", "Dairy"].map((t) => (
-                <li key={t} className="text-[12.5px] text-slate-700 flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-sky-500 shrink-0" />{t}</li>
-              ))}
-            </ul>
+        <div className="rounded-2xl border border-emerald-900/20 bg-[#0f1f16] p-3.5">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-[11px] font-bold tracking-[0.14em] text-emerald-400/80 uppercase">Your programs</p>
+              <p className="mt-1 text-[12px] text-emerald-100/80">{selectedPrograms.length ? selectedPrograms.join(" + ") : "Showing all available programs"}</p>
+            </div>
+            <button onClick={onEditPrograms} className="rounded-full border border-emerald-700/40 bg-emerald-500/10 px-3 py-1.5 text-[11px] font-semibold text-emerald-200">Edit</button>
           </div>
-          <div className="rounded-2xl overflow-hidden border border-violet-100 bg-violet-50/60">
-            <div className="bg-violet-600 px-3.5 py-2"><span className="text-white text-[12px] font-extrabold tracking-wide">WIC</span></div>
-            <ul className="px-3.5 py-3 space-y-1.5">
-              {["Specific cereals", "Baby formula", "Eggs & Milk", "Juice"].map((t) => (
-                <li key={t} className="text-[12.5px] text-slate-700 flex items-center gap-1.5"><span className="w-1 h-1 rounded-full bg-violet-500 shrink-0" />{t}</li>
-              ))}
-            </ul>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {selectedPrograms.length ? selectedPrograms.map((program) => <span key={program} className="rounded-full bg-emerald-500/15 px-2.5 py-1 text-[11px] font-bold text-emerald-300">{program}</span>) : ["SNAP", "WIC"].map((program) => <span key={program} className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[11px] font-bold text-emerald-200/80">{program}</span>)}
           </div>
         </div>
       </div>
 
       <div className="px-5 mt-6">
-        <TicketCard className="px-4 py-3.5">
+        <TicketCard className="px-4 py-3.5 bg-[#0f1f16] border-emerald-900/20">
           <div className="flex items-start gap-3">
             <span className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0"><Bell size={16} className="text-emerald-700" /></span>
             <div className="min-w-0 flex-1">
-              <p className="text-[13px] font-semibold text-emerald-950">Proximity alerts are on</p>
-              <p className="text-[11.5px] text-slate-400 leading-snug mt-0.5">
+              <p className="text-[13px] font-semibold text-emerald-50">Proximity alerts are on</p>
+              <p className="text-[11.5px] text-emerald-100/70 leading-snug mt-0.5">
                 We'll notify you when you're near a store with a clipped coupon, or a food bank that's well stocked. Try it:
               </p>
-              <button
-                onClick={onSimulate}
-                className="mt-2 inline-flex items-center gap-1.5 text-[11.5px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full active:scale-95 transition-transform"
-              >
-                <Navigation2 size={12} /> Simulate walking near Star Market
-              </button>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <button
+                  onClick={onSimulate}
+                  className="inline-flex items-center gap-1.5 text-[11.5px] font-bold text-emerald-200 bg-emerald-500/15 px-3 py-1.5 rounded-full active:scale-95 transition-transform"
+                >
+                  <Navigation2 size={12} /> Simulate walking near Star Market
+                </button>
+                <button
+                  onClick={onRequestNotifications}
+                  className="inline-flex items-center gap-1.5 text-[11.5px] font-bold text-amber-200 bg-amber-500/15 px-3 py-1.5 rounded-full active:scale-95 transition-transform"
+                >
+                  <Bell size={12} /> Enable alerts
+                </button>
+              </div>
             </div>
           </div>
         </TicketCard>
@@ -644,30 +806,30 @@ function HomeView({ recentScans, goTo, location, onSimulate }) {
 
       <div className="px-5 mt-6">
         <div className="flex items-center justify-between mb-2.5">
-          <p className="text-[11px] font-bold tracking-[0.14em] text-emerald-900/50 uppercase">Recent scans</p>
-          <button onClick={() => goTo("scan")} className="text-[11.5px] font-semibold text-emerald-700 flex items-center gap-0.5">Scan more <ChevronRight size={13} /></button>
+          <p className="text-[11px] font-bold tracking-[0.14em] text-emerald-400/80 uppercase">Recent scans</p>
+          <button onClick={() => goTo("scan")} className="text-[11.5px] font-semibold text-emerald-300 flex items-center gap-0.5">Scan more <ChevronRight size={13} /></button>
         </div>
         <div className="space-y-2.5">
           {recentScans.map((item) => {
             const Icon = item.icon;
             return (
-              <TicketCard key={item.id} className="px-4 py-3">
+              <TicketCard key={item.id} className="px-4 py-3 bg-[#0f1f16] border-emerald-900/20">
                 <div className="flex items-center gap-3">
                   <span className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${item.eligible ? "bg-emerald-50" : "bg-rose-50"}`}>
                     <Icon size={16} className={item.eligible ? "text-emerald-700" : "text-rose-500"} />
                   </span>
                   <div className="min-w-0 flex-1">
-                    <p className="text-[13.5px] font-semibold text-slate-900 truncate">{item.name}</p>
-                    <p className="text-[11.5px] text-slate-400">{item.brand}</p>
+                    <p className="text-[13.5px] font-semibold text-emerald-50 truncate">{item.name}</p>
+                    <p className="text-[11.5px] text-emerald-100/65">{item.brand}</p>
                   </div>
                   <div className="text-right shrink-0">
                     {item.eligible ? (
                       <>
                         <div className="flex justify-end gap-1 mb-1">{item.tags.map((t) => <ProgramTag key={t} program={t} />)}</div>
-                        <p className="text-[12px] font-mono font-bold text-emerald-600">Save ${item.save.toFixed(2)}</p>
+                        <p className="text-[12px] font-mono font-bold text-emerald-300">Save ${item.save.toFixed(2)}</p>
                       </>
                     ) : (
-                      <p className="text-[12px] font-semibold text-rose-500">Not eligible</p>
+                      <p className="text-[12px] font-semibold text-rose-300">Not eligible</p>
                     )}
                   </div>
                   <span className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${item.eligible ? "bg-emerald-500" : "bg-rose-100"}`}>
@@ -687,7 +849,7 @@ function HomeView({ recentScans, goTo, location, onSimulate }) {
 /* SCAN VIEW                                                          */
 /* ------------------------------------------------------------------ */
 
-function ScanView({ onSaveProduct, onCoupon }) {
+function ScanView({ onSaveProduct, onCoupon, selectedPrograms }) {
   const [mode, setMode] = useState("barcode"); // barcode | qr
   const { videoRef, status: camStatus } = useCamera(true);
   const [scanning, setScanning] = useState(false);
@@ -806,7 +968,10 @@ function ScanView({ onSaveProduct, onCoupon }) {
 
       {mode === "barcode" ? (
         <div className="space-y-2.5">
-          {productDB.map((p) => {
+          {productDB.filter((p) => {
+            if (!selectedPrograms.length) return true;
+            return p.stores.some((store) => (selectedPrograms.includes("SNAP") ? store.snap : false) || (selectedPrograms.includes("WIC") ? store.wic : false));
+          }).map((p) => {
             const Icon = p.icon;
             const eligible = p.stores.some((s) => s.snap || s.wic);
             return (
@@ -1445,6 +1610,13 @@ export default function App() {
   const [deals, setDeals] = useState(initialDeals);
   const [foodBanks, setFoodBanks] = useState(initialFoodBanks);
   const [toasts, setToasts] = useState([]);
+  const [selectedPrograms, setSelectedPrograms] = usePersistentState("snapsaver-selected-programs", []);
+  const [showOnboarding, setShowOnboarding] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.localStorage.getItem("snapsaver-onboarding-complete") !== "true";
+  });
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedFood, setSelectedFood] = useState(null);
   const notifiedRef = useRef(new Set());
   const location = useGeolocation();
 
@@ -1454,6 +1626,19 @@ export default function App() {
     setTimeout(() => setToasts((prev) => prev.filter((t) => t.id !== id)), 4200);
   }, []);
   const dismissToast = (id) => setToasts((prev) => prev.filter((t) => t.id !== id));
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("snapsaver-onboarding-complete", showOnboarding ? "false" : "true");
+  }, [showOnboarding]);
+
+  const handleToggleProgram = (program) => {
+    setSelectedPrograms((prev) => (prev.includes(program) ? prev.filter((item) => item !== program) : [...prev, program]));
+  };
+
+  const handleContinueOnboarding = () => {
+    setShowOnboarding(false);
+  };
 
   const handleSaveScan = (product) => {
     const cheapest = [...product.stores].sort((a, b) => a.price - a.coupon - (b.price - b.coupon))[0];
@@ -1478,11 +1663,50 @@ export default function App() {
     setDeals((prev) => prev.map((d) => (d.id === dealId ? { ...d, clipped: true } : d)));
   };
 
+  const handleRequestNotifications = async () => {
+    if (typeof window === "undefined" || !("Notification" in window)) {
+      pushToast("Notifications are unavailable in this browser.");
+      return;
+    }
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") {
+      pushToast("Notifications enabled for deal and pantry reminders.");
+    } else {
+      pushToast("Notifications were not enabled. You can still browse deals manually.");
+    }
+  };
+
   const handleSimulateProximity = () => {
     const star = STORE_LOCATIONS.find((s) => s.name === "Star Market – Fenway");
     location.setOverride({ lat: star.lat + 0.0007, lng: star.lng + 0.0006 });
     pushToast("GPS simulation: you're now approaching Star Market – Fenway.");
   };
+
+  const visibleRecentScans = useMemo(() => {
+    if (!selectedPrograms.length) return recentScans;
+    return recentScans.filter((item) => item.tags.some((tag) => selectedPrograms.includes(tag)));
+  }, [recentScans, selectedPrograms]);
+
+  const visibleDeals = useMemo(() => {
+    if (!selectedPrograms.length) return deals;
+    return deals.filter((deal) => deal.tags.some((tag) => selectedPrograms.includes(tag)));
+  }, [deals, selectedPrograms]);
+
+  const visibleFoodBanks = useMemo(() => {
+    if (!selectedPrograms.length) return foodBanks;
+    return foodBanks.filter((bank) => bank.tags.some((tag) => selectedPrograms.includes(tag)));
+  }, [foodBanks, selectedPrograms]);
+
+  const searchResults = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return [];
+    return productDB.filter((product) => {
+      const matchesText = [product.name, product.brand, product.category].some((field) => field.toLowerCase().includes(query));
+      if (!matchesText) return false;
+      if (!selectedPrograms.length) return true;
+      return product.stores.some((store) => (selectedPrograms.includes("SNAP") ? store.snap : false) || (selectedPrograms.includes("WIC") ? store.wic : false));
+    });
+  }, [searchQuery, selectedPrograms]);
 
   // Proximity notifications: check distance to stores (clipped coupons) and food banks (high stock)
   useEffect(() => {
@@ -1518,22 +1742,40 @@ export default function App() {
   }, [location.coords, deals, foodBanks, pushToast]);
 
   return (
-    <div className="min-h-screen w-full bg-[#e7ede9] flex items-center justify-center py-6 px-3">
+    <div className="min-h-screen w-full bg-[#05110d] flex items-center justify-center py-6 px-3">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
         .emdc-root, .emdc-root * { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
         .emdc-root .font-display { font-family: 'Outfit', ui-sans-serif, system-ui, sans-serif; }
         .emdc-root .font-mono { font-family: 'Space Mono', ui-monospace, monospace; }
       `}</style>
-      <div className="emdc-root relative w-full max-w-md h-[90vh] max-h-[860px] bg-[#f7faf8] rounded-[36px] shadow-2xl overflow-hidden flex flex-col ring-1 ring-black/5 border border-slate-200">
+      <div className="emdc-root relative w-full max-w-md h-[90vh] max-h-[860px] bg-[#07120e] rounded-[36px] shadow-2xl overflow-hidden flex flex-col ring-1 ring-emerald-900/10 border border-emerald-900/20">
         <ToastStack toasts={toasts} dismiss={dismissToast} />
         <div className="flex-1 overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:hidden">
-          {tab === "home" && (
-            <HomeView recentScans={recentScans} goTo={setTab} location={location} onSimulate={handleSimulateProximity} />
+          {showOnboarding && (
+            <OnboardingModal selectedPrograms={selectedPrograms} onContinue={handleContinueOnboarding} onToggleProgram={handleToggleProgram} />
           )}
-          {tab === "scan" && <ScanView onSaveProduct={handleSaveScan} onCoupon={handleCouponFromScan} />}
-          {tab === "deals" && <DealsView deals={deals} setDeals={setDeals} />}
-          {tab === "foodbanks" && <FoodBanksView foodBanks={foodBanks} setFoodBanks={setFoodBanks} location={location} />}
+          {selectedFood && (
+            <FoodDetailModal item={selectedFood} selectedPrograms={selectedPrograms} onClose={() => setSelectedFood(null)} />
+          )}
+          {tab === "home" && (
+            <HomeView
+              recentScans={visibleRecentScans}
+              goTo={setTab}
+              location={location}
+              onSimulate={handleSimulateProximity}
+              selectedPrograms={selectedPrograms}
+              onEditPrograms={() => setShowOnboarding(true)}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              searchResults={searchResults}
+              onOpenFood={setSelectedFood}
+              onRequestNotifications={handleRequestNotifications}
+            />
+          )}
+          {tab === "scan" && <ScanView onSaveProduct={handleSaveScan} onCoupon={handleCouponFromScan} selectedPrograms={selectedPrograms} />}
+          {tab === "deals" && <DealsView deals={visibleDeals} setDeals={setDeals} />}
+          {tab === "foodbanks" && <FoodBanksView foodBanks={visibleFoodBanks} setFoodBanks={setFoodBanks} location={location} />}
           <div className="h-20" />
         </div>
         <BottomNav active={tab} goTo={setTab} />
