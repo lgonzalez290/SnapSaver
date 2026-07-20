@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import {
   Home, ScanLine, Tag, MapPin, ChevronRight, ChevronDown, Search, X, Check,
-  Camera, CameraOff, Clock, Phone, TrendingUp, Loader2, Bookmark,
+  Camera, CameraOff, Clock, Phone, TrendingUp, Loader2, Bookmark, Settings,
   Wheat, Milk, Egg, Baby, Cookie, Sparkles, Navigation2, QrCode, Barcode,
   Store, ThumbsUp, AlertTriangle, Bell, ExternalLink, RefreshCw, Locate,
   WifiOff, Info, Plus, ShieldCheck, ShieldOff, ArrowUpLeft,
@@ -487,9 +487,9 @@ function ProgramTag({ program }) {
   );
 }
 
-function TicketCard({ children, className = "", pageBg = "#f7faf8" }) {
+function TicketCard({ children, className = "", pageBg = "#030806" }) {
   return (
-    <div className={`relative bg-white rounded-2xl border border-emerald-900/[0.06] shadow-[0_1px_2px_rgba(6,40,26,0.06),0_8px_24px_-12px_rgba(6,40,26,0.15)] ${className}`}>
+    <div className={`relative bg-[#90ee90] rounded-2xl border border-white/70 shadow-[0_1px_2px_rgba(6,40,26,0.06),0_8px_24px_-12px_rgba(6,40,26,0.15)] ${className}`}>
       <div className="absolute -left-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full" style={{ background: pageBg }} />
       <div className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full" style={{ background: pageBg }} />
       {children}
@@ -513,63 +513,63 @@ function LogoPlaceholder({ label = "Logo", compact = false }) {
   );
 }
 
-function AuthScreen({ mode, onModeChange, email, setEmail, password, setPassword, onSubmit, error }) {
+function AuthScreen({ mode, onModeChange, email, setEmail, password, setPassword, onSubmit, error, onDevTest }) {
   return (
-    <div className="min-h-screen bg-[#f7faf8] px-4 py-8 flex items-center justify-center">
-      <div className="w-full max-w-md rounded-[28px] border border-emerald-100 bg-white p-5 shadow-[0_20px_50px_-24px_rgba(6,95,70,0.35)]">
+    <div className="min-h-screen bg-[#02160d] px-4 py-8 flex items-center justify-center">
+      <div className="w-full max-w-md rounded-[28px] border border-emerald-900/40 bg-[#08130d] p-5 shadow-[0_20px_50px_-24px_rgba(6,95,70,0.45)]">
         <div className="flex items-center gap-3">
           <LogoPlaceholder />
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-600">SnapSaver</p>
-            <h1 className="text-[22px] font-extrabold text-emerald-950">{mode === "login" ? "Welcome back" : "Create your account"}</h1>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-400">SnapSaver</p>
+            <h1 className="text-[22px] font-extrabold text-emerald-50">{mode === "login" ? "Welcome back" : "Create your account"}</h1>
           </div>
         </div>
 
-        <p className="mt-4 text-[13px] leading-6 text-slate-600">
+        <p className="mt-4 text-[13px] leading-6 text-slate-300">
           Sign in or create an account to save favorite coupons, track benefit eligibility, and keep your pantry plan organized.
         </p>
 
-        <div className="mt-5 flex rounded-2xl border border-emerald-100 bg-emerald-50 p-1">
+        <div className="mt-5 flex rounded-2xl border border-emerald-900/40 bg-[#0f1d13] p-1">
           <button
             type="button"
             onClick={() => onModeChange("login")}
-            className={`flex-1 rounded-xl px-3 py-2 text-[12px] font-bold transition-colors ${mode === "login" ? "bg-white text-emerald-700 shadow-sm" : "text-slate-600"}`}
+            className={`flex-1 rounded-xl px-3 py-2 text-[12px] font-bold transition-colors ${mode === "login" ? "bg-emerald-600 text-white shadow-sm" : "text-slate-400"}`}
           >
             Log in
           </button>
           <button
             type="button"
             onClick={() => onModeChange("signup")}
-            className={`flex-1 rounded-xl px-3 py-2 text-[12px] font-bold transition-colors ${mode === "signup" ? "bg-white text-emerald-700 shadow-sm" : "text-slate-600"}`}
+            className={`flex-1 rounded-xl px-3 py-2 text-[12px] font-bold transition-colors ${mode === "signup" ? "bg-emerald-600 text-white shadow-sm" : "text-slate-400"}`}
           >
             Sign up
           </button>
         </div>
 
         <form className="mt-5 space-y-3" onSubmit={onSubmit}>
-          <label className="block text-[12px] font-semibold text-slate-700">
+          <label className="block text-[12px] font-semibold text-emerald-100">
             Email address
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="mt-1.5 w-full rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-[13px] text-slate-800 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="mt-1.5 w-full rounded-2xl border border-emerald-900/40 bg-[#07120d] px-3.5 py-3 text-[13px] text-emerald-50 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-900/40"
             />
           </label>
 
-          <label className="block text-[12px] font-semibold text-slate-700">
+          <label className="block text-[12px] font-semibold text-emerald-100">
             Password
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter a password"
-              className="mt-1.5 w-full rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-[13px] text-slate-800 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+              className="mt-1.5 w-full rounded-2xl border border-emerald-900/40 bg-[#07120d] px-3.5 py-3 text-[13px] text-emerald-50 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-900/40"
             />
           </label>
 
-          {error ? <p className="text-[12px] font-medium text-rose-600">{error}</p> : null}
+          {error ? <p className="text-[12px] font-medium text-rose-400">{error}</p> : null}
 
           <button
             type="submit"
@@ -577,6 +577,16 @@ function AuthScreen({ mode, onModeChange, email, setEmail, password, setPassword
           >
             {mode === "login" ? "Log in" : "Create account"}
           </button>
+
+          {mode === "signup" && (
+            <button
+              type="button"
+              onClick={onDevTest}
+              className="w-full rounded-2xl border border-emerald-700 bg-[#0f1d13] px-4 py-3 text-[13px] font-bold text-emerald-200 transition-colors hover:bg-[#16271d]"
+            >
+              Dev test account
+            </button>
+          )}
         </form>
       </div>
     </div>
@@ -680,10 +690,10 @@ function OnboardingModal({ selectedPrograms, onContinue, onToggleProgram }) {
   const draft = selectedPrograms;
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-emerald-950/70 px-3 py-4">
-      <div className="w-full max-w-md rounded-[28px] border border-emerald-900/20 bg-white p-5 shadow-2xl shadow-black/30">
-        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-600">Personalize your plan</p>
-        <h2 className="mt-2 text-[22px] font-extrabold text-emerald-950">Which benefits do you use?</h2>
-        <p className="mt-2 text-[13px] leading-6 text-slate-600">
+      <div className="w-full max-w-md rounded-[28px] border border-emerald-900/40 bg-[#07120d] p-5 shadow-2xl shadow-black/30">
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-400">Personalize your plan</p>
+        <h2 className="mt-2 text-[22px] font-extrabold text-white">Which benefits do you use?</h2>
+        <p className="mt-2 text-[13px] leading-6 text-slate-300">
           Choose the programs you currently use or can access so SnapSaver can focus eligibility, coupons, and store offers for you.
         </p>
 
@@ -694,13 +704,13 @@ function OnboardingModal({ selectedPrograms, onContinue, onToggleProgram }) {
               <button
                 key={program}
                 onClick={() => onToggleProgram(program)}
-                className={`flex items-center justify-between rounded-2xl border px-3.5 py-3 text-left transition-all active:scale-[0.98] ${active ? "border-emerald-400 bg-emerald-50 text-emerald-950" : "border-slate-200 bg-white text-slate-700"}`}
+                className={`flex items-center justify-between rounded-2xl border px-3.5 py-3 text-left transition-all active:scale-[0.98] ${active ? "border-emerald-400 bg-emerald-900/50 text-white" : "border-emerald-900/40 bg-[#0f1d13] text-slate-200"}`}
               >
                 <div>
                   <p className="text-[13px] font-bold">{program}</p>
-                  <p className="text-[11.5px] text-slate-500">{PROGRAM_META[program].detail}</p>
+                  <p className="text-[11.5px] text-slate-400">{PROGRAM_META[program].detail}</p>
                 </div>
-                <span className={`rounded-full px-2.5 py-1 text-[10.5px] font-bold ${active ? "bg-emerald-600 text-white" : "bg-slate-100 text-slate-600"}`}>
+                <span className={`rounded-full px-2.5 py-1 text-[10.5px] font-bold ${active ? "bg-emerald-600 text-white" : "bg-[#07120d] text-slate-300"}`}>
                   {active ? "Selected" : "Add"}
                 </span>
               </button>
@@ -711,7 +721,7 @@ function OnboardingModal({ selectedPrograms, onContinue, onToggleProgram }) {
         <button
           onClick={onContinue}
           disabled={draft.length === 0}
-          className={`mt-5 w-full rounded-2xl px-4 py-3 text-[13px] font-bold transition-colors ${draft.length === 0 ? "bg-slate-200 text-slate-500" : "bg-emerald-800 text-white active:bg-emerald-900"}`}
+          className={`mt-5 w-full rounded-2xl px-4 py-3 text-[13px] font-bold transition-colors ${draft.length === 0 ? "bg-[#0f1d13] text-slate-400" : "bg-emerald-700 text-white active:bg-emerald-800"}`}
         >
           Continue to SnapSaver
         </button>
@@ -735,46 +745,46 @@ function FoodDetailModal({ item, selectedPrograms, onClose }) {
   const Icon = item.icon;
   return (
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-emerald-950/65 px-3 py-4">
-      <div className="w-full max-w-md rounded-[28px] border border-emerald-900/15 bg-white p-4 shadow-2xl shadow-black/30">
+      <div className="w-full max-w-md rounded-[28px] border border-emerald-900/40 bg-[#07120d] p-4 shadow-2xl shadow-black/30">
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-start gap-3">
-            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-950/70 text-emerald-300">
               <Icon size={22} />
             </span>
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-600">Food details</p>
-              <h3 className="text-[18px] font-extrabold text-emerald-950">{item.name}</h3>
-              <p className="text-[12px] text-slate-500">{item.brand} · {item.category}</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-400">Food details</p>
+              <h3 className="text-[18px] font-extrabold text-white">{item.name}</h3>
+              <p className="text-[12px] text-slate-400">{item.brand} · {item.category}</p>
             </div>
           </div>
-          <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-600">×</button>
+          <button onClick={onClose} className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0f1d13] text-slate-300">×</button>
         </div>
 
-        <div className="mt-4 rounded-2xl border border-emerald-100 bg-emerald-50/70 p-3">
-          <p className="text-[12px] font-semibold text-emerald-900">About this food</p>
-          <p className="mt-1 text-[12.5px] leading-6 text-slate-700">{item.description}</p>
-          <p className="mt-2 text-[12px] font-semibold text-emerald-900">Nutrition</p>
-          <p className="mt-1 text-[12px] text-slate-700">{item.nutrition}</p>
+        <div className="mt-4 rounded-2xl border border-emerald-900/40 bg-[#0f1d13] p-3">
+          <p className="text-[12px] font-semibold text-emerald-300">About this food</p>
+          <p className="mt-1 text-[12.5px] leading-6 text-slate-300">{item.description}</p>
+          <p className="mt-2 text-[12px] font-semibold text-emerald-300">Nutrition</p>
+          <p className="mt-1 text-[12px] text-slate-300">{item.nutrition}</p>
         </div>
 
         <div className="mt-4">
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-900/60">Program eligibility</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-400">Program eligibility</p>
           <div className="mt-2 flex flex-wrap gap-2">
-            {selectedPrograms.length ? selectedPrograms.map((program) => <span key={program} className="rounded-full bg-emerald-100 px-2.5 py-1 text-[11px] font-bold text-emerald-700">{program}</span>) : <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600">Browse all programs</span>}
+            {selectedPrograms.length ? selectedPrograms.map((program) => <span key={program} className="rounded-full bg-emerald-900/60 px-2.5 py-1 text-[11px] font-bold text-emerald-200">{program}</span>) : <span className="rounded-full bg-[#0f1d13] px-2.5 py-1 text-[11px] font-bold text-slate-300">Browse all programs</span>}
           </div>
-          <p className="mt-2 text-[12px] leading-6 text-slate-600">{eligibility}</p>
+          <p className="mt-2 text-[12px] leading-6 text-slate-300">{eligibility}</p>
         </div>
 
-        <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-3">
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">Nearby store comparison</p>
+        <div className="mt-4 rounded-2xl border border-emerald-900/40 bg-[#0f1d13] p-3">
+          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-300">Nearby store comparison</p>
           <div className="mt-2 space-y-2">
             {visibleStores.map((store) => {
               const trueCost = store.price - store.coupon;
               return (
-                <div key={`${item.id}-${store.store}`} className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2">
+                <div key={`${item.id}-${store.store}`} className="flex items-center justify-between rounded-xl border border-emerald-900/40 bg-[#07120d] px-3 py-2">
                   <div>
-                    <p className="text-[12px] font-semibold text-slate-800">{store.store}</p>
-                    <p className="text-[11px] text-slate-500">${trueCost.toFixed(2)} est. after coupon</p>
+                    <p className="text-[12px] font-semibold text-white">{store.store}</p>
+                    <p className="text-[11px] text-slate-400">${trueCost.toFixed(2)} est. after coupon</p>
                   </div>
                   <div className="flex gap-1.5">
                     {store.snap && <span className="rounded-full bg-sky-100 px-2 py-1 text-[10px] font-bold text-sky-700">SNAP</span>}
@@ -799,17 +809,17 @@ const SAVINGS_TREND = [12, 16, 15, 21, 26, 24, 30, 34, 31, 38, 43, 47.8];
 function HomeView({ recentScans, goTo, location, onSimulate, selectedPrograms, onEditPrograms, searchQuery, onSearchChange, searchResults, onOpenFood, onRequestNotifications, onSignOut, userName }) {
   return (
     <div className="pb-6">
-      <div className="bg-[#f7fff8] px-5 pt-7 pb-6 rounded-b-[28px] border-b border-emerald-100">
+      <div className="bg-[#90ee90] px-5 pt-7 pb-6 rounded-b-[28px] border-b border-white/70">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-[11px] font-light tracking-[0.18em] text-emerald-600 uppercase font-mono">Good morning</p>
-            <h1 className="mt-1 text-[26px] leading-[1.15] font-extrabold text-emerald-950 tracking-tight font-display">
+            <p className="text-[11px] font-light tracking-[0.18em] text-white uppercase font-mono">Good morning</p>
+            <h1 className="mt-1 text-[26px] leading-[1.15] font-extrabold text-white tracking-tight font-display">
               Make every<br />dollar count.
             </h1>
           </div>
           <div className="flex items-center gap-2">
-            <button onClick={onSignOut} className="rounded-full border border-emerald-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-emerald-700">Sign out</button>
-            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 text-xs font-bold shrink-0">{(userName || "MA").slice(0, 2).toUpperCase()}</div>
+            <button onClick={onSignOut} className="rounded-full border border-white/70 bg-[#7ad77a] px-3 py-1.5 text-[11px] font-semibold text-white">Sign out</button>
+            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/70 bg-[#7ad77a] text-white text-xs font-bold shrink-0">{(userName || "MA").slice(0, 2).toUpperCase()}</div>
           </div>
         </div>
 
@@ -817,48 +827,48 @@ function HomeView({ recentScans, goTo, location, onSimulate, selectedPrograms, o
 
         <div className="mt-5 flex items-center justify-between">
           <div>
-            <p className="text-[11px] font-semibold text-emerald-700 uppercase tracking-wide">This month's savings</p>
-            <p className="mt-1 text-[32px] font-extrabold text-emerald-950 font-mono tracking-tight">$47.80</p>
-            <p className="mt-1 flex items-center gap-1 text-[12px] font-light text-slate-500">
-              <TrendingUp size={13} strokeWidth={1.75} className="text-emerald-600" /> $12 more than last month
+            <p className="text-[11px] font-semibold text-white uppercase tracking-wide">This month's savings</p>
+            <p className="mt-1 text-[32px] font-extrabold text-white font-mono tracking-tight">$47.80</p>
+            <p className="mt-1 flex items-center gap-1 text-[12px] font-light text-white/80">
+              <TrendingUp size={13} strokeWidth={1.75} className="text-white" /> $12 more than last month
             </p>
           </div>
           <Sparkline data={SAVINGS_TREND} ghost />
         </div>
 
         <div className="mt-5 grid grid-cols-3 gap-2.5">
-          <button onClick={() => goTo("scan")} className="bg-white rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-emerald-100 shadow-sm hover:border-emerald-400/50">
-            <span className="w-9 h-9 rounded-xl bg-emerald-500/15 flex items-center justify-center"><Camera size={17} className="text-emerald-600" /></span>
-            <span className="text-[11.5px] font-semibold text-emerald-950">Scan Item</span>
+          <button onClick={() => goTo("scan")} className="bg-[#7ad77a] rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-white/70 shadow-sm hover:border-white/90">
+            <span className="w-9 h-9 rounded-xl bg-white/25 flex items-center justify-center"><Camera size={17} className="text-white" /></span>
+            <span className="text-[11.5px] font-semibold text-white">Scan Item</span>
           </button>
-          <button onClick={() => goTo("deals")} className="bg-white rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-emerald-100 shadow-sm hover:border-amber-400/50">
-            <span className="w-9 h-9 rounded-xl bg-amber-500/15 flex items-center justify-center"><Tag size={17} className="text-amber-600" /></span>
-            <span className="text-[11.5px] font-semibold text-emerald-950">Find Deals</span>
+          <button onClick={() => goTo("deals")} className="bg-[#7ad77a] rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-white/70 shadow-sm hover:border-white/90">
+            <span className="w-9 h-9 rounded-xl bg-white/25 flex items-center justify-center"><Tag size={17} className="text-white" /></span>
+            <span className="text-[11.5px] font-semibold text-white">Find Deals</span>
           </button>
-          <button onClick={() => goTo("foodbanks")} className="bg-white rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-emerald-100 shadow-sm hover:border-rose-400/50">
-            <span className="w-9 h-9 rounded-xl bg-rose-500/15 flex items-center justify-center"><MapPin size={17} className="text-rose-600" /></span>
-            <span className="text-[11.5px] font-semibold text-emerald-950">Food Banks</span>
+          <button onClick={() => goTo("foodbanks")} className="bg-[#7ad77a] rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-white/70 shadow-sm hover:border-white/90">
+            <span className="w-9 h-9 rounded-xl bg-white/25 flex items-center justify-center"><MapPin size={17} className="text-white" /></span>
+            <span className="text-[11.5px] font-semibold text-white">Food Banks</span>
           </button>
         </div>
       </div>
 
       <div className="px-5 mt-6">
-        <div className="rounded-2xl border border-emerald-100 bg-white p-3.5 shadow-sm">
+        <div className="rounded-2xl border border-white/70 bg-[#90ee90] p-3.5 shadow-sm">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-[11px] font-bold tracking-[0.14em] text-emerald-600 uppercase">Your programs</p>
-              <p className="mt-1 text-[12px] text-slate-600">{selectedPrograms.length ? selectedPrograms.join(" + ") : "Showing all available programs"}</p>
+              <p className="text-[11px] font-bold tracking-[0.14em] text-white uppercase">Your programs</p>
+              <p className="mt-1 text-[12px] text-white/90">{selectedPrograms.length ? selectedPrograms.join(" + ") : "Showing all available programs"}</p>
             </div>
-            <button onClick={onEditPrograms} className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[11px] font-semibold text-emerald-700">Edit</button>
+            <button onClick={onEditPrograms} className="rounded-full border border-white/70 bg-[#7ad77a] px-3 py-1.5 text-[11px] font-semibold text-white">Edit</button>
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
-            {selectedPrograms.length ? selectedPrograms.map((program) => <span key={program} className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700">{program}</span>) : ["SNAP", "WIC"].map((program) => <span key={program} className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700">{program}</span>)}
+            {selectedPrograms.length ? selectedPrograms.map((program) => <span key={program} className="rounded-full bg-[#7ad77a] px-2.5 py-1 text-[11px] font-bold text-white">{program}</span>) : ["SNAP", "WIC"].map((program) => <span key={program} className="rounded-full bg-[#7ad77a] px-2.5 py-1 text-[11px] font-bold text-white">{program}</span>)}
           </div>
         </div>
       </div>
 
       <div className="px-5 mt-6">
-        <TicketCard className="px-4 py-3.5 bg-white border-emerald-100">
+        <TicketCard className="px-4 py-3.5 border-emerald-900/40">
           <div className="flex items-start gap-3">
             <span className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0"><Bell size={16} className="text-emerald-700" /></span>
             <div className="min-w-0 flex-1">
@@ -887,14 +897,14 @@ function HomeView({ recentScans, goTo, location, onSimulate, selectedPrograms, o
 
       <div className="px-5 mt-6">
         <div className="flex items-center justify-between mb-2.5">
-          <p className="text-[11px] font-bold tracking-[0.14em] text-emerald-600 uppercase">Recent scans</p>
-          <button onClick={() => goTo("scan")} className="text-[11.5px] font-semibold text-emerald-700 flex items-center gap-0.5">Scan more <ChevronRight size={13} /></button>
+          <p className="text-[11px] font-bold tracking-[0.14em] text-emerald-400 uppercase">Recent scans</p>
+          <button onClick={() => goTo("scan")} className="text-[11.5px] font-semibold text-emerald-300 flex items-center gap-0.5">Scan more <ChevronRight size={13} /></button>
         </div>
         <div className="space-y-2.5">
           {recentScans.map((item) => {
             const Icon = item.icon;
             return (
-              <TicketCard key={item.id} className="px-4 py-3 bg-white border-emerald-100">
+              <TicketCard key={item.id} className="px-4 py-3 border-emerald-900/40">
                 <div className="flex items-center gap-3">
                   <span className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${item.eligible ? "bg-emerald-50" : "bg-rose-50"}`}>
                     <Icon size={16} className={item.eligible ? "text-emerald-700" : "text-rose-500"} />
@@ -982,12 +992,12 @@ function ScanView({ onSaveProduct, onCoupon, selectedPrograms }) {
   }[camStatus];
 
   return (
-    <div className="rounded-b-[24px] border border-emerald-100 bg-[#f7fff8] px-5 pt-7 pb-6">
+    <div className="rounded-b-[24px] border border-white/70 bg-[#90ee90] px-5 pt-7 pb-6">
       <div className="flex items-start justify-between gap-3">
         <div>
-          <p className="text-[11px] font-bold tracking-[0.18em] text-emerald-600 uppercase font-mono">Scan</p>
-          <h1 className="mt-1 text-[24px] font-extrabold text-emerald-950 tracking-tight font-display">Barcode &amp; QR Scanner</h1>
-          <p className="text-[13px] text-slate-500 mt-0.5">Check SNAP &amp; WIC eligibility instantly</p>
+          <p className="text-[11px] font-bold tracking-[0.18em] text-white uppercase font-mono">Scan</p>
+          <h1 className="mt-1 text-[24px] font-extrabold text-white tracking-tight font-display">Barcode &amp; QR Scanner</h1>
+          <p className="text-[13px] text-white/90 mt-0.5">Check SNAP &amp; WIC eligibility instantly</p>
         </div>
         <LogoPlaceholder label="SNAP" compact />
       </div>
@@ -997,7 +1007,7 @@ function ScanView({ onSaveProduct, onCoupon, selectedPrograms }) {
           <button
             key={id}
             onClick={() => { setMode(id); setResult(null); }}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-2xl text-[12.5px] font-bold transition-colors ${mode === id ? "bg-emerald-950 text-white" : "bg-white text-slate-500 border border-slate-200"}`}
+            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-2xl text-[12.5px] font-bold transition-colors ${mode === id ? "bg-[#7ad77a] text-white border border-white/70" : "bg-white/90 text-slate-600 border border-white/70"}`}
           >
             <Icon size={14} /> {label}
           </button>
@@ -1255,17 +1265,17 @@ function DealsView({ deals, setDeals }) {
 
   return (
     <div className="pb-6">
-      <div className="rounded-b-[28px] border border-emerald-100 bg-[#f7fff8] px-5 pt-7 pb-6">
+      <div className="rounded-b-[28px] border border-white/70 bg-[#90ee90] px-5 pt-7 pb-6">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-[11px] font-bold tracking-[0.18em] text-emerald-600 uppercase font-mono">Deals</p>
-            <h1 className="mt-1 text-[24px] font-extrabold text-emerald-950 tracking-tight font-display">Deals &amp; Coupons</h1>
-            <p className="text-[13px] text-slate-500 mt-0.5">Eligible brands near you</p>
+            <p className="text-[11px] font-bold tracking-[0.18em] text-white uppercase font-mono">Deals</p>
+            <h1 className="mt-1 text-[24px] font-extrabold text-white tracking-tight font-display">Deals &amp; Coupons</h1>
+            <p className="text-[13px] text-white/90 mt-0.5">Eligible brands near you</p>
           </div>
           <LogoPlaceholder label="DEALS" compact />
         </div>
 
-        <div className="mt-4 rounded-2xl border border-emerald-100 bg-white px-4 py-3.5 flex items-center justify-between shadow-sm">
+        <div className="mt-4 rounded-2xl border border-white/70 bg-[#7ad77a] px-4 py-3.5 flex items-center justify-between shadow-sm">
           <div>
             <p className="text-[11px] font-semibold text-emerald-700 uppercase tracking-wide">Potential savings</p>
             <p className="mt-0.5 text-[26px] font-extrabold text-emerald-950 font-mono tracking-tight">
@@ -1596,12 +1606,12 @@ function FoodBanksView({ foodBanks, setFoodBanks, location }) {
 
   return (
     <div className="pb-6">
-      <div className="rounded-b-[24px] border border-emerald-100 bg-[#f7fff8] px-5 pt-7 pb-5">
+      <div className="rounded-b-[24px] border border-white/70 bg-[#90ee90] px-5 pt-7 pb-5">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-[11px] font-light tracking-[0.18em] text-emerald-600 uppercase font-mono">Food banks</p>
-            <h1 className="mt-1 text-[24px] font-extrabold text-emerald-950 tracking-tight font-display">Nearby Food Banks</h1>
-            <p className="text-[13px] font-light text-slate-500 mt-2">Boston, MA · {openCount} open now</p>
+            <p className="text-[11px] font-light tracking-[0.18em] text-white uppercase font-mono">Food banks</p>
+            <h1 className="mt-1 text-[24px] font-extrabold text-white tracking-tight font-display">Nearby Food Banks</h1>
+            <p className="text-[13px] font-light text-white/90 mt-2">Boston, MA · {openCount} open now</p>
             <div className="mt-2"><LocationChip location={location} /></div>
           </div>
           <LogoPlaceholder label="MAP" compact />
@@ -1669,21 +1679,119 @@ function BottomNav({ active, goTo }) {
     { id: "home", label: "Home", icon: Home },
     { id: "scan", label: "Scan", icon: ScanLine },
     { id: "deals", label: "Deals", icon: Tag },
+    { id: "about", label: "About", icon: Info },
     { id: "foodbanks", label: "Food Banks", icon: MapPin },
+    { id: "systems", label: "Settings", icon: Settings },
   ];
   return (
     <div className="absolute bottom-3 left-3 right-3">
-      <div className="bg-[#0a1a13]/95 backdrop-blur-md rounded-[22px] px-2 py-2 flex items-center justify-between shadow-2xl shadow-black/30">
+      <div className="bg-[#07120d]/95 backdrop-blur-md rounded-[22px] px-2 py-2 flex items-center justify-between shadow-2xl shadow-black/30 border border-emerald-900/40">
         {items.map((it) => {
           const Icon = it.icon;
           const isActive = active === it.id;
           return (
             <button key={it.id} onClick={() => goTo(it.id)} className={`flex-1 flex flex-col items-center gap-1 py-1.5 rounded-2xl transition-colors ${isActive ? "bg-emerald-500/15" : ""}`}>
-              <Icon size={18} className={isActive ? "text-emerald-400" : "text-slate-500"} strokeWidth={isActive ? 2.4 : 2} />
-              <span className={`text-[10px] font-semibold ${isActive ? "text-emerald-400" : "text-slate-500"}`}>{it.label}</span>
+              <Icon size={18} className={isActive ? "text-emerald-400" : "text-white/80"} strokeWidth={isActive ? 2.4 : 2} />
+              <span className={`text-[10px] font-semibold ${isActive ? "text-emerald-400" : "text-white/80"}`}>{it.label}</span>
             </button>
           );
         })}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* SYSTEMS VIEW                                                       */
+/* ------------------------------------------------------------------ */
+
+function SystemsView() {
+  const sections = [
+    { title: "Account", body: "Manage your profile details, saved preferences, and household information." },
+    { title: "Notifications", body: "Choose how you receive store alerts, coupon updates, and pantry reminders." },
+    { title: "Privacy", body: "Control what information is visible and how location-based recommendations are used." },
+    { title: "Security", body: "Update your password, sign-in method, and protection preferences." },
+    { title: "Preferences", body: "Fine-tune language, units, and how results are displayed in the app." },
+  ];
+
+  return (
+    <div className="pb-6 bg-[#02160d]">
+      <div className="bg-[#90ee90] px-5 pt-7 pb-6 rounded-b-[28px] border-b border-white/70">
+        <p className="text-[11px] font-bold tracking-[0.18em] text-white uppercase font-mono">Settings</p>
+        <h1 className="mt-1 text-[24px] font-extrabold text-white tracking-tight font-display">Settings</h1>
+        <p className="text-[13px] text-white/90 mt-1">A clean place to manage your app preferences and account settings.</p>
+      </div>
+
+      <div className="px-5 mt-5 space-y-3">
+        {sections.map((section) => (
+          <div key={section.title} className="rounded-[22px] border border-white/70 bg-[#90ee90] p-4 shadow-sm">
+            <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-white">{section.title}</p>
+            <p className="mt-2 text-[13px] leading-6 text-white">{section.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function AboutView() {
+  const members = [
+    { name: "Ava Chen", role: "Founder & Product Lead", bio: "Ava shapes the product experience and keeps the app focused on real everyday needs.", flip: false },
+    { name: "Marcus Lee", role: "Design Lead", bio: "Marcus brings a thoughtful, modern visual approach that keeps the interface simple and friendly.", flip: true },
+    { name: "Jules Rivera", role: "Community Partner", bio: "Jules helps build meaningful connections with food access partners and local support networks.", flip: false },
+  ];
+
+  return (
+    <div className="pb-6 bg-[#02160d]">
+      <div className="bg-[#90ee90] px-5 pt-7 pb-6 rounded-b-[28px] border-b border-white/70">
+        <p className="text-[11px] font-bold tracking-[0.18em] text-white uppercase font-mono">About us</p>
+        <h1 className="mt-1 text-[24px] font-extrabold text-white tracking-tight font-display">About us</h1>
+        <p className="text-[13px] text-white/90 mt-1">We are building a more helpful, human-centered way to make food support easier to find.</p>
+      </div>
+
+      <div className="px-5 mt-5 space-y-4">
+        {members.map((member) => (
+          <div key={member.name} className="flex flex-col gap-3 rounded-[24px] border border-white/70 bg-[#90ee90] p-4 md:flex-row md:items-center shadow-sm">
+            {member.flip ? (
+              <>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[13px] font-semibold text-white">{member.name}</p>
+                  <p className="mt-1 text-[12px] font-semibold uppercase tracking-[0.16em] text-white/90">{member.role}</p>
+                  <p className="mt-2 text-[13px] leading-6 text-white">{member.bio}</p>
+                </div>
+                <div className="flex h-24 w-full max-w-[140px] items-center justify-center rounded-[20px] border border-emerald-900/40 bg-[#07120d] text-[12px] font-semibold text-emerald-200 md:ml-4 md:w-24">
+                  Image Placeholder
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex h-24 w-full max-w-[140px] items-center justify-center rounded-[20px] border border-emerald-900/40 bg-[#07120d] text-[12px] font-semibold text-emerald-200 md:w-24">
+                  Image Placeholder
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[13px] font-semibold text-white">{member.name}</p>
+                  <p className="mt-1 text-[12px] font-semibold uppercase tracking-[0.16em] text-white/90">{member.role}</p>
+                  <p className="mt-2 text-[13px] leading-6 text-white">{member.bio}</p>
+                </div>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div className="px-5 mt-5 grid gap-3 md:grid-cols-2">
+        <div className="rounded-[24px] border border-white/70 bg-[#90ee90] p-4 shadow-sm">
+          <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-white">Our Mission</p>
+          <p className="mt-2 text-[13px] leading-6 text-white">
+            We help households discover practical food support, compare options, and feel more confident making smart everyday decisions.
+          </p>
+        </div>
+        <div className="rounded-[24px] border border-white/70 bg-[#90ee90] p-4 shadow-sm">
+          <p className="text-[12px] font-bold uppercase tracking-[0.16em] text-white">Contact Us</p>
+          <p className="mt-2 text-[13px] leading-6 text-white">Email: hello@snapsaver.app</p>
+          <p className="text-[13px] leading-6 text-white">Phone: (555) 010-2048</p>
+          <p className="text-[13px] leading-6 text-white">Social: @SnapSaverApp</p>
+        </div>
       </div>
     </div>
   );
@@ -1794,6 +1902,19 @@ export default function App() {
       setAuthPassword("");
     } catch {
       setAuthError("We could not save your sign-in information right now.");
+    }
+  };
+
+  const handleDevTest = () => {
+    if (typeof window !== "undefined") {
+      const demoUser = { email: "dev@example.com" };
+      window.localStorage.setItem("snapsaver-authenticated", "true");
+      window.localStorage.setItem("snapsaver-auth-user", JSON.stringify(demoUser));
+      setAuthUser(demoUser);
+      setIsAuthenticated(true);
+      setAuthEmail("dev@example.com");
+      setAuthPassword("dev1234");
+      setAuthError("");
     }
   };
 
@@ -1922,19 +2043,20 @@ export default function App() {
         setPassword={setAuthPassword}
         onSubmit={handleAuthSubmit}
         error={authError}
+        onDevTest={handleDevTest}
       />
     );
   }
 
   return (
-    <div className="min-h-screen w-full bg-[#f7faf8] flex items-center justify-center py-6 px-3">
+    <div className="min-h-screen w-full bg-[#02160d] flex items-center justify-center p-0 sm:p-3">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
         .emdc-root, .emdc-root * { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
         .emdc-root .font-display { font-family: 'Outfit', ui-sans-serif, system-ui, sans-serif; }
         .emdc-root .font-mono { font-family: 'Space Mono', ui-monospace, monospace; }
       `}</style>
-      <div className="emdc-root relative w-full max-w-md h-[90vh] max-h-[860px] bg-white rounded-[36px] shadow-[0_24px_80px_-28px_rgba(6,95,70,0.35)] overflow-hidden flex flex-col ring-1 ring-emerald-100 border border-emerald-100">
+      <div className="emdc-root relative w-full max-w-md min-h-[100dvh] sm:min-h-[90dvh] sm:max-h-[860px] bg-[#07120d] rounded-none sm:rounded-[32px] shadow-[0_24px_80px_-28px_rgba(6,95,70,0.35)] overflow-hidden flex flex-col ring-1 ring-emerald-900/40 border border-emerald-900/40">
         <ToastStack toasts={toasts} dismiss={dismissToast} />
         <div className="flex-1 overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:hidden">
           {showOnboarding && (
@@ -1962,6 +2084,8 @@ export default function App() {
           )}
           {tab === "scan" && <ScanView onSaveProduct={handleSaveScan} onCoupon={handleCouponFromScan} selectedPrograms={selectedPrograms} />}
           {tab === "deals" && <DealsView deals={visibleDeals} setDeals={setDeals} />}
+          {tab === "systems" && <SystemsView />}
+          {tab === "about" && <AboutView />}
           {tab === "foodbanks" && <FoodBanksView foodBanks={visibleFoodBanks} setFoodBanks={setFoodBanks} location={location} />}
           <div className="h-20" />
         </div>
