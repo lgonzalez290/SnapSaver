@@ -505,6 +505,84 @@ function TicketDivider() {
   );
 }
 
+function LogoPlaceholder({ label = "Logo", compact = false }) {
+  return (
+    <div className={`flex items-center justify-center rounded-2xl border border-emerald-200 bg-emerald-50 text-emerald-700 font-bold ${compact ? "h-10 w-10 text-[11px]" : "h-12 w-12 text-[13px]"}`}>
+      {label}
+    </div>
+  );
+}
+
+function AuthScreen({ mode, onModeChange, email, setEmail, password, setPassword, onSubmit, error }) {
+  return (
+    <div className="min-h-screen bg-[#f7faf8] px-4 py-8 flex items-center justify-center">
+      <div className="w-full max-w-md rounded-[28px] border border-emerald-100 bg-white p-5 shadow-[0_20px_50px_-24px_rgba(6,95,70,0.35)]">
+        <div className="flex items-center gap-3">
+          <LogoPlaceholder />
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-600">SnapSaver</p>
+            <h1 className="text-[22px] font-extrabold text-emerald-950">{mode === "login" ? "Welcome back" : "Create your account"}</h1>
+          </div>
+        </div>
+
+        <p className="mt-4 text-[13px] leading-6 text-slate-600">
+          Sign in or create an account to save favorite coupons, track benefit eligibility, and keep your pantry plan organized.
+        </p>
+
+        <div className="mt-5 flex rounded-2xl border border-emerald-100 bg-emerald-50 p-1">
+          <button
+            type="button"
+            onClick={() => onModeChange("login")}
+            className={`flex-1 rounded-xl px-3 py-2 text-[12px] font-bold transition-colors ${mode === "login" ? "bg-white text-emerald-700 shadow-sm" : "text-slate-600"}`}
+          >
+            Log in
+          </button>
+          <button
+            type="button"
+            onClick={() => onModeChange("signup")}
+            className={`flex-1 rounded-xl px-3 py-2 text-[12px] font-bold transition-colors ${mode === "signup" ? "bg-white text-emerald-700 shadow-sm" : "text-slate-600"}`}
+          >
+            Sign up
+          </button>
+        </div>
+
+        <form className="mt-5 space-y-3" onSubmit={onSubmit}>
+          <label className="block text-[12px] font-semibold text-slate-700">
+            Email address
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              className="mt-1.5 w-full rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-[13px] text-slate-800 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+            />
+          </label>
+
+          <label className="block text-[12px] font-semibold text-slate-700">
+            Password
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter a password"
+              className="mt-1.5 w-full rounded-2xl border border-slate-200 bg-slate-50 px-3.5 py-3 text-[13px] text-slate-800 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
+            />
+          </label>
+
+          {error ? <p className="text-[12px] font-medium text-rose-600">{error}</p> : null}
+
+          <button
+            type="submit"
+            className="w-full rounded-2xl bg-emerald-600 px-4 py-3 text-[13px] font-bold text-white transition-colors hover:bg-emerald-700"
+          >
+            {mode === "login" ? "Log in" : "Create account"}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 function Sparkline({ data, width = 120, height = 34, ghost = false }) {
   const max = Math.max(...data);
   const min = Math.min(...data);
@@ -718,66 +796,69 @@ function FoodDetailModal({ item, selectedPrograms, onClose }) {
 
 const SAVINGS_TREND = [12, 16, 15, 21, 26, 24, 30, 34, 31, 38, 43, 47.8];
 
-function HomeView({ recentScans, goTo, location, onSimulate, selectedPrograms, onEditPrograms, searchQuery, onSearchChange, searchResults, onOpenFood, onRequestNotifications }) {
+function HomeView({ recentScans, goTo, location, onSimulate, selectedPrograms, onEditPrograms, searchQuery, onSearchChange, searchResults, onOpenFood, onRequestNotifications, onSignOut, userName }) {
   return (
     <div className="pb-6">
-      <div className="bg-[#07120e] px-5 pt-7 pb-6 rounded-b-[28px] border-b border-emerald-900/20">
-        <div className="flex items-start justify-between">
+      <div className="bg-[#f7fff8] px-5 pt-7 pb-6 rounded-b-[28px] border-b border-emerald-100">
+        <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-[11px] font-light tracking-[0.18em] text-emerald-200/70 uppercase font-mono">Good morning</p>
-            <h1 className="mt-1 text-[26px] leading-[1.15] font-extrabold text-emerald-50 tracking-tight font-display">
+            <p className="text-[11px] font-light tracking-[0.18em] text-emerald-600 uppercase font-mono">Good morning</p>
+            <h1 className="mt-1 text-[26px] leading-[1.15] font-extrabold text-emerald-950 tracking-tight font-display">
               Make every<br />dollar count.
             </h1>
           </div>
-          <div className="w-10 h-10 rounded-full bg-emerald-500/15 border border-emerald-400/20 flex items-center justify-center text-emerald-200 text-xs font-bold shrink-0">MA</div>
+          <div className="flex items-center gap-2">
+            <button onClick={onSignOut} className="rounded-full border border-emerald-200 bg-white px-3 py-1.5 text-[11px] font-semibold text-emerald-700">Sign out</button>
+            <div className="flex h-10 w-10 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 text-xs font-bold shrink-0">{(userName || "MA").slice(0, 2).toUpperCase()}</div>
+          </div>
         </div>
 
         <div className="mt-3"><LocationChip location={location} /></div>
 
         <div className="mt-5 flex items-center justify-between">
           <div>
-            <p className="text-[11px] font-semibold text-emerald-300/80 uppercase tracking-wide">This month's savings</p>
-            <p className="mt-1 text-[32px] font-extrabold text-emerald-50 font-mono tracking-tight">$47.80</p>
-            <p className="mt-1 flex items-center gap-1 text-[12px] font-light text-emerald-100/70">
-              <TrendingUp size={13} strokeWidth={1.75} /> $12 more than last month
+            <p className="text-[11px] font-semibold text-emerald-700 uppercase tracking-wide">This month's savings</p>
+            <p className="mt-1 text-[32px] font-extrabold text-emerald-950 font-mono tracking-tight">$47.80</p>
+            <p className="mt-1 flex items-center gap-1 text-[12px] font-light text-slate-500">
+              <TrendingUp size={13} strokeWidth={1.75} className="text-emerald-600" /> $12 more than last month
             </p>
           </div>
           <Sparkline data={SAVINGS_TREND} ghost />
         </div>
 
         <div className="mt-5 grid grid-cols-3 gap-2.5">
-          <button onClick={() => goTo("scan")} className="bg-[#0f1f16] rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-emerald-900/30 shadow-sm hover:border-emerald-500/40">
-            <span className="w-9 h-9 rounded-xl bg-emerald-500/15 flex items-center justify-center"><Camera size={17} className="text-emerald-300" /></span>
-            <span className="text-[11.5px] font-semibold text-emerald-50">Scan Item</span>
+          <button onClick={() => goTo("scan")} className="bg-white rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-emerald-100 shadow-sm hover:border-emerald-400/50">
+            <span className="w-9 h-9 rounded-xl bg-emerald-500/15 flex items-center justify-center"><Camera size={17} className="text-emerald-600" /></span>
+            <span className="text-[11.5px] font-semibold text-emerald-950">Scan Item</span>
           </button>
-          <button onClick={() => goTo("deals")} className="bg-[#0f1f16] rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-emerald-900/30 shadow-sm hover:border-amber-400/40">
-            <span className="w-9 h-9 rounded-xl bg-amber-500/15 flex items-center justify-center"><Tag size={17} className="text-amber-300" /></span>
-            <span className="text-[11.5px] font-semibold text-emerald-50">Find Deals</span>
+          <button onClick={() => goTo("deals")} className="bg-white rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-emerald-100 shadow-sm hover:border-amber-400/50">
+            <span className="w-9 h-9 rounded-xl bg-amber-500/15 flex items-center justify-center"><Tag size={17} className="text-amber-600" /></span>
+            <span className="text-[11.5px] font-semibold text-emerald-950">Find Deals</span>
           </button>
-          <button onClick={() => goTo("foodbanks")} className="bg-[#0f1f16] rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-emerald-900/30 shadow-sm hover:border-rose-400/40">
-            <span className="w-9 h-9 rounded-xl bg-rose-500/15 flex items-center justify-center"><MapPin size={17} className="text-rose-300" /></span>
-            <span className="text-[11.5px] font-semibold text-emerald-50">Food Banks</span>
+          <button onClick={() => goTo("foodbanks")} className="bg-white rounded-2xl py-3 flex flex-col items-center gap-1.5 active:scale-95 transition-transform border border-emerald-100 shadow-sm hover:border-rose-400/50">
+            <span className="w-9 h-9 rounded-xl bg-rose-500/15 flex items-center justify-center"><MapPin size={17} className="text-rose-600" /></span>
+            <span className="text-[11.5px] font-semibold text-emerald-950">Food Banks</span>
           </button>
         </div>
       </div>
 
       <div className="px-5 mt-6">
-        <div className="rounded-2xl border border-emerald-900/20 bg-[#0f1f16] p-3.5">
+        <div className="rounded-2xl border border-emerald-100 bg-white p-3.5 shadow-sm">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-[11px] font-bold tracking-[0.14em] text-emerald-400/80 uppercase">Your programs</p>
-              <p className="mt-1 text-[12px] text-emerald-100/80">{selectedPrograms.length ? selectedPrograms.join(" + ") : "Showing all available programs"}</p>
+              <p className="text-[11px] font-bold tracking-[0.14em] text-emerald-600 uppercase">Your programs</p>
+              <p className="mt-1 text-[12px] text-slate-600">{selectedPrograms.length ? selectedPrograms.join(" + ") : "Showing all available programs"}</p>
             </div>
-            <button onClick={onEditPrograms} className="rounded-full border border-emerald-700/40 bg-emerald-500/10 px-3 py-1.5 text-[11px] font-semibold text-emerald-200">Edit</button>
+            <button onClick={onEditPrograms} className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[11px] font-semibold text-emerald-700">Edit</button>
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
-            {selectedPrograms.length ? selectedPrograms.map((program) => <span key={program} className="rounded-full bg-emerald-500/15 px-2.5 py-1 text-[11px] font-bold text-emerald-300">{program}</span>) : ["SNAP", "WIC"].map((program) => <span key={program} className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[11px] font-bold text-emerald-200/80">{program}</span>)}
+            {selectedPrograms.length ? selectedPrograms.map((program) => <span key={program} className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700">{program}</span>) : ["SNAP", "WIC"].map((program) => <span key={program} className="rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700">{program}</span>)}
           </div>
         </div>
       </div>
 
       <div className="px-5 mt-6">
-        <TicketCard className="px-4 py-3.5 bg-[#0f1f16] border-emerald-900/20">
+        <TicketCard className="px-4 py-3.5 bg-white border-emerald-100">
           <div className="flex items-start gap-3">
             <span className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0"><Bell size={16} className="text-emerald-700" /></span>
             <div className="min-w-0 flex-1">
@@ -806,14 +887,14 @@ function HomeView({ recentScans, goTo, location, onSimulate, selectedPrograms, o
 
       <div className="px-5 mt-6">
         <div className="flex items-center justify-between mb-2.5">
-          <p className="text-[11px] font-bold tracking-[0.14em] text-emerald-400/80 uppercase">Recent scans</p>
-          <button onClick={() => goTo("scan")} className="text-[11.5px] font-semibold text-emerald-300 flex items-center gap-0.5">Scan more <ChevronRight size={13} /></button>
+          <p className="text-[11px] font-bold tracking-[0.14em] text-emerald-600 uppercase">Recent scans</p>
+          <button onClick={() => goTo("scan")} className="text-[11.5px] font-semibold text-emerald-700 flex items-center gap-0.5">Scan more <ChevronRight size={13} /></button>
         </div>
         <div className="space-y-2.5">
           {recentScans.map((item) => {
             const Icon = item.icon;
             return (
-              <TicketCard key={item.id} className="px-4 py-3 bg-[#0f1f16] border-emerald-900/20">
+              <TicketCard key={item.id} className="px-4 py-3 bg-white border-emerald-100">
                 <div className="flex items-center gap-3">
                   <span className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${item.eligible ? "bg-emerald-50" : "bg-rose-50"}`}>
                     <Icon size={16} className={item.eligible ? "text-emerald-700" : "text-rose-500"} />
@@ -901,10 +982,15 @@ function ScanView({ onSaveProduct, onCoupon, selectedPrograms }) {
   }[camStatus];
 
   return (
-    <div className="px-5 pt-7 pb-6">
-      <p className="text-[11px] font-bold tracking-[0.18em] text-emerald-600 uppercase font-mono">Scan</p>
-      <h1 className="mt-1 text-[24px] font-extrabold text-emerald-950 tracking-tight font-display">Barcode &amp; QR Scanner</h1>
-      <p className="text-[13px] text-slate-500 mt-0.5">Check SNAP &amp; WIC eligibility instantly</p>
+    <div className="rounded-b-[24px] border border-emerald-100 bg-[#f7fff8] px-5 pt-7 pb-6">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-[11px] font-bold tracking-[0.18em] text-emerald-600 uppercase font-mono">Scan</p>
+          <h1 className="mt-1 text-[24px] font-extrabold text-emerald-950 tracking-tight font-display">Barcode &amp; QR Scanner</h1>
+          <p className="text-[13px] text-slate-500 mt-0.5">Check SNAP &amp; WIC eligibility instantly</p>
+        </div>
+        <LogoPlaceholder label="SNAP" compact />
+      </div>
 
       <div className="mt-4 flex gap-2">
         {[{ id: "barcode", label: "Barcode / UPC", Icon: Barcode }, { id: "qr", label: "QR Code", Icon: QrCode }].map(({ id, label, Icon }) => (
@@ -1169,20 +1255,25 @@ function DealsView({ deals, setDeals }) {
 
   return (
     <div className="pb-6">
-      <div className="bg-gradient-to-br from-[#052e1f] to-[#0f4a33] px-5 pt-7 pb-6 rounded-b-[28px]">
-        <p className="text-[11px] font-bold tracking-[0.18em] text-emerald-300/80 uppercase font-mono">Deals</p>
-        <h1 className="mt-1 text-[24px] font-extrabold text-white tracking-tight font-display">Deals &amp; Coupons</h1>
-        <p className="text-[13px] text-emerald-200/70 mt-0.5">Eligible brands near you</p>
-
-        <div className="mt-4 rounded-2xl bg-white/[0.08] border border-white/10 px-4 py-3.5 flex items-center justify-between">
+      <div className="rounded-b-[28px] border border-emerald-100 bg-[#f7fff8] px-5 pt-7 pb-6">
+        <div className="flex items-start justify-between gap-3">
           <div>
-            <p className="text-[11px] font-semibold text-emerald-200/80 uppercase tracking-wide">Potential savings</p>
-            <p className="mt-0.5 text-[26px] font-extrabold text-white font-mono tracking-tight">
+            <p className="text-[11px] font-bold tracking-[0.18em] text-emerald-600 uppercase font-mono">Deals</p>
+            <h1 className="mt-1 text-[24px] font-extrabold text-emerald-950 tracking-tight font-display">Deals &amp; Coupons</h1>
+            <p className="text-[13px] text-slate-500 mt-0.5">Eligible brands near you</p>
+          </div>
+          <LogoPlaceholder label="DEALS" compact />
+        </div>
+
+        <div className="mt-4 rounded-2xl border border-emerald-100 bg-white px-4 py-3.5 flex items-center justify-between shadow-sm">
+          <div>
+            <p className="text-[11px] font-semibold text-emerald-700 uppercase tracking-wide">Potential savings</p>
+            <p className="mt-0.5 text-[26px] font-extrabold text-emerald-950 font-mono tracking-tight">
               ${totalSavings.toFixed(2)}
-              <span className="text-[13px] font-semibold text-emerald-300/70 ml-1.5">on {clippedCount} item{clippedCount === 1 ? "" : "s"}</span>
+              <span className="text-[13px] font-semibold text-slate-500 ml-1.5">on {clippedCount} item{clippedCount === 1 ? "" : "s"}</span>
             </p>
           </div>
-          <span className="w-11 h-11 rounded-full bg-emerald-400/15 flex items-center justify-center shrink-0"><Tag size={19} className="text-emerald-300" /></span>
+          <span className="w-11 h-11 rounded-full bg-emerald-50 flex items-center justify-center shrink-0"><Tag size={19} className="text-emerald-700" /></span>
         </div>
       </div>
 
@@ -1505,12 +1596,16 @@ function FoodBanksView({ foodBanks, setFoodBanks, location }) {
 
   return (
     <div className="pb-6">
-      {/* Ultra-minimal ghost header — near-white bg, thin low-contrast type */}
-      <div className="bg-[#fdfefe] px-5 pt-7 pb-5">
-        <p className="text-[11px] font-light tracking-[0.18em] text-emerald-400/80 uppercase font-mono">Food banks</p>
-        <h1 className="mt-1 text-[24px] font-extrabold text-emerald-950 tracking-tight font-display">Nearby Food Banks</h1>
-        <p className="text-[13px] font-light text-[#94A3B8] mt-2">Boston, MA · {openCount} open now</p>
-        <div className="mt-2"><LocationChip location={location} /></div>
+      <div className="rounded-b-[24px] border border-emerald-100 bg-[#f7fff8] px-5 pt-7 pb-5">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <p className="text-[11px] font-light tracking-[0.18em] text-emerald-600 uppercase font-mono">Food banks</p>
+            <h1 className="mt-1 text-[24px] font-extrabold text-emerald-950 tracking-tight font-display">Nearby Food Banks</h1>
+            <p className="text-[13px] font-light text-slate-500 mt-2">Boston, MA · {openCount} open now</p>
+            <div className="mt-2"><LocationChip location={location} /></div>
+          </div>
+          <LogoPlaceholder label="MAP" compact />
+        </div>
       </div>
 
       <div className="px-5">
@@ -1610,6 +1705,27 @@ export default function App() {
   const [deals, setDeals] = useState(initialDeals);
   const [foodBanks, setFoodBanks] = useState(initialFoodBanks);
   const [toasts, setToasts] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return window.localStorage.getItem("snapsaver-authenticated") === "true";
+    } catch {
+      return false;
+    }
+  });
+  const [authMode, setAuthMode] = useState("login");
+  const [authEmail, setAuthEmail] = useState("");
+  const [authPassword, setAuthPassword] = useState("");
+  const [authError, setAuthError] = useState("");
+  const [authUser, setAuthUser] = useState(() => {
+    if (typeof window === "undefined") return null;
+    try {
+      const stored = window.localStorage.getItem("snapsaver-auth-user");
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  });
   const [selectedPrograms, setSelectedPrograms] = usePersistentState("snapsaver-selected-programs", []);
   const [showOnboarding, setShowOnboarding] = useState(() => {
     if (typeof window === "undefined") return false;
@@ -1638,6 +1754,60 @@ export default function App() {
 
   const handleContinueOnboarding = () => {
     setShowOnboarding(false);
+  };
+
+  const handleAuthSubmit = (event) => {
+    event.preventDefault();
+    setAuthError("");
+
+    const normalizedEmail = authEmail.trim().toLowerCase();
+    const normalizedPassword = authPassword.trim();
+
+    if (!normalizedEmail || !normalizedPassword) {
+      setAuthError("Please enter both an email and a password.");
+      return;
+    }
+
+    if (typeof window === "undefined") return;
+
+    try {
+      const existingUsers = JSON.parse(window.localStorage.getItem("snapsaver-users") || "{}") || {};
+      if (authMode === "signup") {
+        if (existingUsers[normalizedEmail]) {
+          setAuthError("An account already exists for that email.");
+          return;
+        }
+        existingUsers[normalizedEmail] = normalizedPassword;
+        window.localStorage.setItem("snapsaver-users", JSON.stringify(existingUsers));
+      } else {
+        if (existingUsers[normalizedEmail] !== normalizedPassword) {
+          setAuthError("That email and password do not match an existing account.");
+          return;
+        }
+      }
+
+      const nextUser = { email: normalizedEmail };
+      window.localStorage.setItem("snapsaver-authenticated", "true");
+      window.localStorage.setItem("snapsaver-auth-user", JSON.stringify(nextUser));
+      setAuthUser(nextUser);
+      setIsAuthenticated(true);
+      setAuthPassword("");
+    } catch {
+      setAuthError("We could not save your sign-in information right now.");
+    }
+  };
+
+  const handleSignOut = () => {
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem("snapsaver-authenticated");
+      window.localStorage.removeItem("snapsaver-auth-user");
+    }
+    setIsAuthenticated(false);
+    setAuthMode("login");
+    setAuthEmail("");
+    setAuthPassword("");
+    setAuthError("");
+    setAuthUser(null);
   };
 
   const handleSaveScan = (product) => {
@@ -1741,15 +1911,30 @@ export default function App() {
     });
   }, [location.coords, deals, foodBanks, pushToast]);
 
+  if (!isAuthenticated) {
+    return (
+      <AuthScreen
+        mode={authMode}
+        onModeChange={setAuthMode}
+        email={authEmail}
+        setEmail={setAuthEmail}
+        password={authPassword}
+        setPassword={setAuthPassword}
+        onSubmit={handleAuthSubmit}
+        error={authError}
+      />
+    );
+  }
+
   return (
-    <div className="min-h-screen w-full bg-[#05110d] flex items-center justify-center py-6 px-3">
+    <div className="min-h-screen w-full bg-[#f7faf8] flex items-center justify-center py-6 px-3">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
         .emdc-root, .emdc-root * { font-family: 'Inter', ui-sans-serif, system-ui, sans-serif; }
         .emdc-root .font-display { font-family: 'Outfit', ui-sans-serif, system-ui, sans-serif; }
         .emdc-root .font-mono { font-family: 'Space Mono', ui-monospace, monospace; }
       `}</style>
-      <div className="emdc-root relative w-full max-w-md h-[90vh] max-h-[860px] bg-[#07120e] rounded-[36px] shadow-2xl overflow-hidden flex flex-col ring-1 ring-emerald-900/10 border border-emerald-900/20">
+      <div className="emdc-root relative w-full max-w-md h-[90vh] max-h-[860px] bg-white rounded-[36px] shadow-[0_24px_80px_-28px_rgba(6,95,70,0.35)] overflow-hidden flex flex-col ring-1 ring-emerald-100 border border-emerald-100">
         <ToastStack toasts={toasts} dismiss={dismissToast} />
         <div className="flex-1 overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:hidden">
           {showOnboarding && (
@@ -1771,6 +1956,8 @@ export default function App() {
               searchResults={searchResults}
               onOpenFood={setSelectedFood}
               onRequestNotifications={handleRequestNotifications}
+              onSignOut={handleSignOut}
+              userName={authUser?.email || "User"}
             />
           )}
           {tab === "scan" && <ScanView onSaveProduct={handleSaveScan} onCoupon={handleCouponFromScan} selectedPrograms={selectedPrograms} />}
