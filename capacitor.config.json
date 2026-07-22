@@ -1,0 +1,9 @@
+{
+  "appId": "com.snapsaver.app",
+  "appName": "SnapSaver",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "allowNavigation": ["localhost", "127.0.0.1", "*.snapsaver.app"]
+  }
+}
